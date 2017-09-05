@@ -8,6 +8,12 @@ function extend(target) {
     return target;
 }
 
+function type(v) {
+    var t = Object.prototype.toString.call(v);
+    return t.substring('[object '.length, t.length - 1).toLowerCase();
+}
+
 export {
-    extend
+    extend,
+    type
 }
