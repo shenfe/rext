@@ -5,7 +5,7 @@ var getOrPostRegEx = /^get|post$/i;
 var sameSchemeRegEx = new RegExp('^(\/\/|' + window.location.protocol + ')', 'i');
 
 /**
- * Make an XDomainRequest (IE)
+ * Make an XDomainRequest (IE 8-9)
  * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
  */
@@ -116,7 +116,9 @@ function xdr(options) {
 
     request.open(options.type, options.url);
 
-    request.send(Util.param(options.data));
+    window.setTimeout(function () {
+        request.send(Util.param(options.data));
+    }, 0);
 
     return _this;
 }

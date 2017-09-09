@@ -1,5 +1,26 @@
 import * as Util from './util.js'
 
+function createStandardXHR() {
+    try {
+        return new window.XMLHttpRequest();
+    } catch (e) {}
+}
+
+function createActiveXHR() {
+    try {
+        return new window.ActiveXObject('Microsoft.XMLHTTP');
+    } catch (e) {}
+}
+
+var createXHR = (window.ActiveXObject === undefined || window.document.documentMode > 8)
+    ? createStandardXHR
+    : function () {
+        return createStandardXHR() || createActiveXHR();
+    };
+
+var xhrId = 0;
+var xhrCallbacks = {};
+
 /* Default settings */
 var defaults = {
     type: 'GET',
@@ -38,6 +59,7 @@ function parseResponse(req, responseType) {
  */
 function xhr(options) {
     var settings = Util.extend(defaults, options || {});
+    var id = ++xhrId;
 
     /* Then-do methods */
     var thenDo = {
@@ -62,13 +84,26 @@ function xhr(options) {
         }
     };
 
-    /* Create our HTTP request */
-    var request = new XMLHttpRequest();
+    /* Create an HTTP request */
+    var request = createXHR();
 
-    /* Setup our listener to process compeleted requests */
-    request.onreadystatechange = function () {
+    /* Setup our listener to process completed requests */
+    var xhrCallback = function (_, toAbort) {
         /* Only run if the request is complete */
-        if (request.readyState !== 4) return;
+        if (xhrCallback == null || (request.readyState !== 4 && !toAbort)) return;
+
+        /* Clean up */
+        delete xhrCallbacks[id];
+        xhrCallback = undefined;
+        request.onreadystatechange = null;
+
+        /* Abort manually if needed */
+        if (toAbort) {
+            if (request.readyState !== 4) {
+                request.abort();
+            }
+            return;
+        }
 
         /* Parse the response data */
         var responseData = parseResponse(request, settings.responseType);
@@ -105,10 +140,33 @@ function xhr(options) {
         : Util.param(settings.data)
     );
 
+    if (request.readyState === 4) {
+        window.setTimeout(xhrCallback);
+    } else {
+        request.onreadystatechange = xhrCallbacks[id] = xhrCallback;
+    }
+
     return _this;
 }
 
+/**
+ * IE 9-: Open requests must be manually aborted on unload (#5280)
+ * @refer https://support.microsoft.com/kb/2856746
+ */
+if (window.attachEvent) {
+    window.attachEvent('onunload', function () {
+        for (var id in xhrCallbacks) {
+            xhrCallbacks.hasOwnProperty(id) && xhrCallbacks[id](undefined, true);
+        }
+    });
+}
+
+var xhrInstance = createXHR();
+var xhrSupported = !!xhrInstance;
+var corsSupported = xhrSupported && ('withCredentials' in xhrInstance);
+
 export {
-    supported: !!window.XMLHttpRequest && !!window.JSON,
+    supported: xhrSupported,
+    corsSupported,
     send: xhr
 }
