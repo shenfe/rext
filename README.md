@@ -1,2 +1,2 @@
-# xajax.js
-Send cross-domain requests.
+# rext
+Send requests.
