@@ -32,6 +32,12 @@ function jsonp(options, callback) {
             this.remove();
         };
     }
+    
+    if (window[callbackGlobalName] == null) {
+        return function (fn) {
+            window[callbackGlobalName] = fn;
+        };
+    }
 }
 
 export {
