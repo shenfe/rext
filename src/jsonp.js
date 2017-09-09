@@ -2,19 +2,21 @@ import * as Util from './util.js'
 
 /**
  * Make a JSONP request
- * @param  {Object} options     Settings
- * @return {[type]}             [description]
+ * @param  {Object} options     Options
+ * @param  {Function} callback  Callback
+ * @return {Undefined}
  */
-function jsonp(options) {
-    /* Create script with the url and callback */
+function jsonp(options, callback) {
+    var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
+    window[callbackGlobalName] = callback || options.callback || function () {};
+
+    /* Create and insert a script */
     var ref = window.document.getElementsByTagName('script')[0];
     var script = window.document.createElement('script');
-    var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
-    window[callbackGlobalName] = options.callback;
-    options.data.callback = callbackGlobalName;
-    script.src = options.url + (options.url.indexOf('?') >= 0 ? '&' : '?') + Util.param(options.data);
-
-    /* Insert script tag into the DOM (append to <head>) */
+    script.src = options.url
+        + (options.url.indexOf('?') >= 0 ? '&' : '?')
+        + Util.param(options.data)
+        + '&callback=' + callbackGlobalName;
     ref.parentNode.insertBefore(script, ref);
 
     /* After the script is loaded and executed, remove it */
@@ -32,4 +34,6 @@ function jsonp(options) {
     }
 }
 
-export default jsonp
+export {
+    send: jsonp
+}

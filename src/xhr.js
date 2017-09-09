@@ -1,8 +1,5 @@
 import * as Util from './util.js'
 
-/* Feature test */
-var supports = !!window.XMLHttpRequest && !!window.JSON;
-
 /* Default settings */
 var defaults = {
     type: 'GET',
@@ -36,34 +33,32 @@ function parseResponse(req, responseType) {
 
 /**
  * Make an XML HTTP request
- * @param  {Object} options     Settings
+ * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
  */
 function xhr(options) {
-    if (!supports) return null;
-
     var settings = Util.extend(defaults, options || {});
 
-    /* Our default methods */
-    var methods = {
-        success: function () {},
-        error: function () {},
-        always: function () {}
+    /* Then-do methods */
+    var thenDo = {
+        success: options.success || function () {},
+        error: options.error || function () {},
+        always: options.always || function () {}
     };
 
     /* Override defaults with user methods and setup chaining */
-    var atomXHR = {
+    var _this = {
         success: function (callback) {
-            methods.success = callback;
-            return atomXHR;
+            thenDo.success = callback;
+            return _this;
         },
         error: function (callback) {
-            methods.error = callback;
-            return atomXHR;
+            thenDo.error = callback;
+            return _this;
         },
         always: function (callback) {
-            methods.always = callback;
-            return atomXHR;
+            thenDo.always = callback;
+            return _this;
         }
     };
 
@@ -72,25 +67,20 @@ function xhr(options) {
 
     /* Setup our listener to process compeleted requests */
     request.onreadystatechange = function () {
-
         /* Only run if the request is complete */
         if (request.readyState !== 4) return;
 
-        /* Parse the response text */
-        var resText = parseResponse(request, settings.responseType);
+        /* Parse the response data */
+        var responseData = parseResponse(request, settings.responseType);
 
         /* Process the response */
         if (request.status >= 200 && request.status < 300) {
-            /* If successful */
-            methods.success.call(methods, resText, request);
+            thenDo.success.call(thenDo, responseData, request);
         } else {
-            /* If failed */
-            methods.error.call(methods, resText, request);
+            thenDo.error.call(thenDo, responseData, request);
         }
 
-        /* Run always */
-        methods.always.call(methods, resText, request);
-
+        thenDo.always.call(thenDo, responseData, request);
     };
 
     /* Setup our HTTP request */
@@ -115,7 +105,10 @@ function xhr(options) {
         : Util.param(settings.data)
     );
 
-    return atomXHR;
+    return _this;
 }
 
-export default xhr
+export {
+    supported: !!window.XMLHttpRequest && !!window.JSON,
+    send: xhr
+}

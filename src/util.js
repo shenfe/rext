@@ -249,6 +249,7 @@ var type = function (v) {
 };
 
 var param = function (obj) {
+    if (obj == null) return '';
     if (type(obj) === 'array') return JSON.stringify(obj);
     if (isBasic(obj)) return String(obj);
     var encoded = [];
