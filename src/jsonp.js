@@ -4,7 +4,7 @@ import * as Util from './util.js'
  * Make a JSONP request
  * @param  {Object} options     Options
  * @param  {Function} callback  Callback
- * @return {Undefined}
+ * @return {Undefined|Function}
  */
 function jsonp(options, callback) {
     var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
