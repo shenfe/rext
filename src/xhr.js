@@ -68,22 +68,6 @@ function xhr(options) {
         always: options.always || function () {}
     };
 
-    /* Override defaults with user methods and setup chaining */
-    var _this = {
-        success: function (callback) {
-            thenDo.success = callback;
-            return _this;
-        },
-        error: function (callback) {
-            thenDo.error = callback;
-            return _this;
-        },
-        always: function (callback) {
-            thenDo.always = callback;
-            return _this;
-        }
-    };
-
     /* Create an HTTP request */
     var request = createXHR();
 
@@ -145,6 +129,27 @@ function xhr(options) {
     } else {
         request.onreadystatechange = xhrCallbacks[id] = xhrCallback;
     }
+
+    /* Override defaults with user methods and setup chaining */
+    var _this = {
+        success: function (callback) {
+            thenDo.success = callback;
+            return _this;
+        },
+        error: function (callback) {
+            thenDo.error = callback;
+            return _this;
+        },
+        always: function (callback) {
+            thenDo.always = callback;
+            return _this;
+        },
+        abort: function () {
+            if (xhrCallback) {
+                xhrCallback(undefined, true);
+            }
+        }
+    };
 
     return _this;
 }
