@@ -84,7 +84,7 @@ function xdr(options) {
             }
         } else if (dataType === 'xml' || (dataType !== 'text' && /\/xml/i.test(request.contentType))) {
             var doc = new ActiveXObject('Microsoft.XMLDOM');
-            doc.async = false;
+            doc.async = 'false';
             try {
                 doc.loadXML(request.responseText);
             } catch (e) {

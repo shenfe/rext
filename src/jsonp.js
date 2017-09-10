@@ -8,9 +8,9 @@ import * as Util from './util.js'
  */
 function jsonp(options, callback) {
     var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
-    window[callbackGlobalName] = callback || options.callback || function () {};
+    window[callbackGlobalName] = callback || options.callback;
 
-    /* Create and insert a script */
+    /* Create and insert */
     var ref = window.document.getElementsByTagName('script')[0];
     var script = window.document.createElement('script');
     script.src = options.url
@@ -19,20 +19,17 @@ function jsonp(options, callback) {
         + '&callback=' + callbackGlobalName;
     ref.parentNode.insertBefore(script, ref);
 
-    /* After the script is loaded and executed, remove it */
-    if (script.readyState) { /* IE */
-        script.onreadystatechange = function () {
-            if (script.readyState === 'loaded' || script.readyState === 'complete') {
-                script.onreadystatechange = null;
-                this.remove();
+    /* When loaded and executed, clean up */
+    script.onload = script.onreadystatechange = function () {
+        if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+            script.onload = script.onreadystatechange = null;
+            if (script.parentNode) {
+                script.parentNode.removeChild(script);
             }
-        };
-    } else {
-        script.onload = function () {
-            this.remove();
-        };
-    }
-    
+            script = null;
+        }
+    };
+
     if (window[callbackGlobalName] == null) {
         return function (fn) {
             window[callbackGlobalName] = fn;

@@ -36,12 +36,11 @@ var defaults = {
 /**
  * Parse text response into JSON
  * @param  {String} req             The response
- * @param  {String} responseType    The responseType in settings
  * @return {String|JSON}            A JSON Object of the responseText, plus the orginal response
  */
-function parseResponse(req, responseType) {
+function parseResponse(req) {
     var result;
-    if (responseType !== 'text' && responseType !== '') {
+    if (req.responseType !== 'text' && req.responseType !== '') {
         return req.response;
     }
     try {
@@ -63,8 +62,8 @@ function xhr(options) {
 
     /* Then-do methods */
     var thenDo = {
-        success: options.success || function () {},
-        error: options.error || function () {},
+        success: options.success || arguments[1] || function () {},
+        error: options.error || arguments[2] || function () {},
         always: options.always || function () {}
     };
 
@@ -90,7 +89,7 @@ function xhr(options) {
         }
 
         /* Parse the response data */
-        var responseData = parseResponse(request, settings.responseType);
+        var responseData = parseResponse(request);
 
         /* Process the response */
         if (request.status >= 200 && request.status < 300) {
@@ -102,18 +101,18 @@ function xhr(options) {
         thenDo.always.call(thenDo, responseData, request);
     };
 
-    /* Setup our HTTP request */
+    /* Setup the request */
     request.open(settings.type, settings.url, true);
     request.responseType = settings.responseType;
 
-    /* Add headers */
+    /* Set headers */
     for (var header in settings.headers) {
         if (settings.headers.hasOwnProperty(header)) {
             request.setRequestHeader(header, settings.headers[header]);
         }
     }
 
-    /* Add withCredentials */
+    /* Set `withCredentials` */
     if (settings.withCredentials) {
         request.withCredentials = true;
     }

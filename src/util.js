@@ -36,11 +36,7 @@ var isArray = function (v) {
 };
 
 var isBasic = function (v) {
-    return v == null
-        || typeof v === 'boolean'
-        || typeof v === 'number'
-        || typeof v === 'string'
-        || typeof v === 'function';
+    return v == null || typeof v === 'boolean' || typeof v === 'number' || typeof v === 'string' || typeof v === 'function';
 };
 
 var isInstance = function (v, creator) {
@@ -66,8 +62,7 @@ var isEventName = function (v) {
 };
 
 var isCSSSelector = function (v) {
-    return v.indexOf(' ') > 0 || v.indexOf('.') >= 0
-        || v.indexOf('[') >= 0 || v.indexOf('#') >= 0;
+    return v.indexOf(' ') > 0 || v.indexOf('.') >= 0 || v.indexOf('[') >= 0 || v.indexOf('#') >= 0;
 };
 
 var each = function (v, func, arrayReverse) {
@@ -255,13 +250,25 @@ var param = function (obj) {
     var encoded = [];
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
-            encoded.push(encodeURIComponent(prop) + '='
-                + encodeURIComponent(isBasic(obj[prop]) ? String(obj[prop]) : JSON.stringify(obj[prop]))
-            );
+            encoded.push(encodeURIComponent(prop) + '=' + encodeURIComponent(isBasic(obj[prop]) ? String(obj[prop]) : JSON.stringify(obj[prop])));
         }
     }
     return encoded.join('&');
 };
+
+function isCrossDomain(url) {
+    var rurl = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/;
+    var locParts = rurl.exec(window.location.href.toLowerCase()) || [];
+    var curParts = rurl.exec(url.toLowerCase());
+    return !!(curParts &&
+        (
+            curParts[1] !== locParts[1]
+            || curParts[2] !== locParts[2]
+            || (curParts[3] || (curParts[1] === 'http:' ? '80' : '443'))
+                !== (locParts[3] || (locParts[1] === 'http:' ? '80' : '443'))
+        )
+    );
+}
 
 export {
     gid,
@@ -289,5 +296,6 @@ export {
     touchLeaves,
     extend,
     type,
-    param
+    param,
+    isCrossDomain
 }
