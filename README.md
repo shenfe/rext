@@ -1,7 +1,8 @@
 # rext
-Send requests.
+A light-weight request library, for all browsers.
 
 ## Matrix
+All the cases of requests.
 
 | Cross-Domain | With-Credentials | Web Browser | Approach | Restriction | Security |
 | :---: | :---: | :---: | :---: | :--- | :--- |
@@ -14,9 +15,9 @@ Send requests.
 | - | - | - | JSONP | - | [Security concerns](https://en.wikipedia.org/wiki/JSONP#Security_concerns) |
 | - | - | - | iframe agent | - | - |
 
-## `Content-Type`
+## `contentType`
 
-The type of data to send.
+The type of data to send. This option affects the request header `Content-Type`.
 
 | Value | Effect |
 | :---: | :--- |
@@ -27,7 +28,7 @@ The type of data to send.
 
 ## `dataType`
 
-The type of data to receive.
+The type of data to receive. This option affects the request header `Accept`, thus affects the response header `Content-Type`.
 
 | Value | Effect |
 | :---: | :--- |
