@@ -4,7 +4,7 @@ Send requests.
 ## Matrix
 
 | Cross-Domain | With-Credentials | Web Browser | Approach | Restriction | Security |
-| :---: | :---: | :---: | :---: | :---: | :---: |
+| :---: | :---: | :---: | :---: | :--- | :--- |
 | no | - | IE 6- | ActiveXObject | Almost the same API as the XMLHttpRequest Object. | - |
 | no | - | IE 7-9 | XMLHttpRequest | The XMLHttpRequest Object. | - |
 | yes | no | IE 8-9 | XDomainRequest | [XDomainRequest - Restrictions, Limitations and Workarounds](https://blogs.msdn.microsoft.com/ieinternals/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds/) | - |
