@@ -6,7 +6,7 @@ import * as Util from './util.js'
  * @param  {Function} callback  Callback
  * @return {Undefined|Function}
  */
-function jsonp(options, callback) {
+function send(options, callback) {
     var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
     window[callbackGlobalName] = callback || options.callback;
 
@@ -38,5 +38,5 @@ function jsonp(options, callback) {
 }
 
 export {
-    send: jsonp
+    send
 }

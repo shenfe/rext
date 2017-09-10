@@ -9,7 +9,7 @@ var sameSchemeRegEx = new RegExp('^(\/\/|' + window.location.protocol + ')', 'i'
  * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
  */
-function xdr(options) {
+function send(options) {
     /* Only if the request: uses GET or POST method, has HTTP or HTTPS protocol, has the same scheme as the calling page */
     if (!getOrPostRegEx.test(options.type) || !httpRegEx.test(options.url) || !sameSchemeRegEx.test(options.url)) {
         return;
@@ -123,7 +123,9 @@ function xdr(options) {
     return _this;
 }
 
+var supported = !!window.XDomainRequest;
+
 export {
-    supported: !!window.XDomainRequest,
-    send: xdr
+    supported,
+    send
 }

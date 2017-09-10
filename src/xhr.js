@@ -56,7 +56,7 @@ function parseResponse(req) {
  * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
  */
-function xhr(options) {
+function send(options) {
     var settings = Util.extend(defaults, options || {});
     var id = ++xhrId;
 
@@ -64,7 +64,7 @@ function xhr(options) {
     var thenDo = {
         success: options.success || arguments[1] || function () {},
         error: options.error || arguments[2] || function () {},
-        always: options.always || function () {}
+        always: options.always || arguments[3] || function () {}
     };
 
     /* Create an HTTP request */
@@ -166,11 +166,11 @@ if (window.attachEvent) {
 }
 
 var xhrInstance = createXHR();
-var xhrSupported = !!xhrInstance;
-var corsSupported = xhrSupported && ('withCredentials' in xhrInstance);
+var supported = !!xhrInstance;
+var corsSupported = supported && ('withCredentials' in xhrInstance);
 
 export {
-    supported: xhrSupported,
+    supported,
     corsSupported,
-    send: xhr
+    send
 }
