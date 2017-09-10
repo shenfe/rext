@@ -18,7 +18,6 @@ var createXHR = (window.ActiveXObject === undefined || window.document.documentM
         return createStandardXHR() || createActiveXHR();
     };
 
-var xhrId = 0;
 var xhrCallbacks = {};
 
 /* Default settings */
@@ -27,7 +26,8 @@ var defaults = {
     url: null,
     data: {},
     headers: {
-        'Content-type': 'application/x-www-form-urlencoded'
+        'Content-type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
     },
     responseType: 'text',
     withCredentials: false
@@ -58,7 +58,7 @@ function parseResponse(req) {
  */
 function send(options) {
     var settings = Util.extend(defaults, options || {});
-    var id = ++xhrId;
+    var id = Util.gid();
 
     /* Then-do methods */
     var thenDo = {

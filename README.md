@@ -13,3 +13,27 @@ Send requests.
 | yes | yes | IE 10-11, non-IE | XMLHttpRequest (Level 2) | Server responses should include the `Access-Control-Allow-Origin` HTTP response header with the exact origin of the calling page, and the `Access-Control-Allow-Credentials` HTTP response header with value `true`. | - |
 | - | - | - | JSONP | - | [Security concerns](https://en.wikipedia.org/wiki/JSONP#Security_concerns) |
 | - | - | - | iframe agent | - | - |
+
+## `Content-Type`
+
+The type of data to send.
+
+| Value | Effect |
+| :---: | :--- |
+| `application/x-www-form-urlencoded` (default) | - |
+| `multipart/form-data` | - |
+| `text/plain` | - |
+| `application/json` | For cross-domain requests, setting the content type to anything other than application/x-www-form-urlencoded, multipart/form-data, or text/plain will trigger the browser to send a preflight OPTIONS request to the server. |
+
+## `dataType`
+
+The type of data to receive.
+
+| Value | Effect |
+| :---: | :--- |
+| xml | - |
+| html | - |
+| script | - |
+| json | - |
+| jsonp | - |
+| text | - |
