@@ -11,32 +11,34 @@ fs.writeFileSync(path.resolve(process.cwd(), './test/iframe-agent.html'),
         .replace('/* Define a whitelist of host names here, e.g. \'.invoker.com\'. */', `"${ipAddr}"`)
 );
 
-/* CORS middleware */
-const allowCrossDomain = function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
-
-    next();
-};
-
 (function () {
     let port = 4011;
     let path = 'dist';
     let app = express();
-    app.use(allowCrossDomain);
-    app.use(cookieParser());
     app.use(express.static(path));
-    app.options('/1.json', function (req, res) {
-        res.header('Access-Control-Allow-Origin', '127.0.0.1:4010');
-    });
-    app.get('/1.json', function (req, res) {
+    app.use(cookieParser());
+
+    /* CORS middleware */
+    app.use(function (req, res, next) {
+        res.header('Access-Control-Allow-Origin', req.header('Origin'));
         res.header('Access-Control-Allow-Credentials', 'true');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, Content-Length, X-Requested-With');
+
+        /* Intercepts OPTIONS method */
+        if ('OPTIONS' === req.method) {
+            res.send(200);
+        } else {
+            next();
+        }
+    });
+
+    app.get('/2.json', function (req, res) {
         res.json({
             code: 200,
             msg: 'ok',
             data: {
-                name: '1'
+                name: '2'
             }
         });
     });
@@ -50,12 +52,12 @@ const allowCrossDomain = function (req, res, next) {
     let app = express();
     app.use(cookieParser());
     app.use(express.static(path));
-    app.get('/2.json', function (req, res) {
+    app.get('/1.json', function (req, res) {
         res.json({
             code: 200,
             msg: 'ok',
             data: {
-                name: '2'
+                name: '1'
             }
         });
     });

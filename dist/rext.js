@@ -4,6 +4,13 @@
 	(factory((global.rext = {})));
 }(this, (function (exports) { 'use strict';
 
+var gid = (function () {
+    var n = 0;
+    return function () {
+        return n++;
+    };
+})();
+
 var isNumber = function (v) {
     return typeof v === 'number';
 };
@@ -237,7 +244,6 @@ var createXHR = (window.ActiveXObject === undefined || window.document.documentM
         return createStandardXHR() || createActiveXHR();
     };
 
-var xhrId = 0;
 var xhrCallbacks = {};
 
 /* Default settings */
@@ -246,7 +252,8 @@ var defaults = {
     url: null,
     data: {},
     headers: {
-        'Content-type': 'application/x-www-form-urlencoded'
+        'Content-type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
     },
     responseType: 'text',
     withCredentials: false
@@ -277,7 +284,7 @@ function parseResponse(req) {
  */
 function send(options) {
     var settings = extend(defaults, options || {});
-    var id = ++xhrId;
+    var id = gid();
 
     /* Then-do methods */
     var thenDo = {
@@ -438,9 +445,11 @@ function send$1(options) {
     };
 
     request.ontimeout = function () {
-        thenDo.error.call(thenDo, {
-            code: 500,
-            message: 'timeout'
+        thenDo.error.call(thenDo, null, {
+            status: {
+                code: 500,
+                message: 'timeout'
+            }
         });
     };
 
@@ -485,20 +494,22 @@ function send$1(options) {
             response.data = doc;
         }
 
-        status.data = response.data;
+        response.status = status;
         if (status.code >= 200 && status.code < 300) {
-            thenDo.success.call(thenDo, status, response);
+            thenDo.success.call(thenDo, response.data, response);
         } else {
-            thenDo.error.call(thenDo, status, response);
+            thenDo.error.call(thenDo, response.data, response);
         }
-        thenDo.always.call(thenDo, status, response);
+        thenDo.always.call(thenDo, response.data, response);
     };
 
     request.onerror = function () {
-        thenDo.error.call(thenDo, {
-            code: 500,
-            message: 'error',
-            data: request.responseText
+        thenDo.error.call(thenDo, request.responseText, {
+            status: {
+                code: 500,
+                message: 'error'
+            },
+            text: request.responseText
         });
     };
 

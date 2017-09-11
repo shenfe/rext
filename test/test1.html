@@ -31,50 +31,50 @@
             <tr>
                 <td class="tg-baqh">GET</td>
                 <td class="tg-baqh">-</td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">n</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh"><button type="button" onclick="get1()">get1</button></td>
             </tr>
             <tr>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
+                <td class="tg-baqh">GET</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh"><button type="button" onclick="get2()">get2</button></td>
             </tr>
             <tr>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
+                <td class="tg-baqh">GET</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh"><button type="button" onclick="get3()">get3</button></td>
             </tr>
             <tr>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
             </tr>
             <tr>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
             </tr>
             <tr>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
-                <td class="tg-baqh"></td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">-</td>
             </tr>
         </table>
         <script src="http://localhost:4011/rext.js" charset="utf-8"></script>
@@ -85,12 +85,18 @@
             }
             function get1() {
                 rext.xhr({
-                    url: 'http://localhost:4011/get1.json'
+                    url: '/1.json'
                 }).success(output).error(output);
             }
             function get2() {
                 rext.xhr({
-                    url: 'http://localhost:4011/get2.json'
+                    url: 'http://localhost:4011/2.json'
+                }).success(output).error(output);
+            }
+            function get3() {
+                rext.xhr({
+                    url: 'http://localhost:4011/2.json',
+                    withCredentials: true
                 }).success(output).error(output);
             }
         </script>
