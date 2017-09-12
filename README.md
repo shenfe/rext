@@ -110,7 +110,7 @@ The MIME type of data to send, like the `contentType` in jQuery ajax.
 | `application/x-www-form-urlencoded` | The default, recommended. Almost the same as the url query string. |
 | `multipart/form-data` | [HTML 4 specification](https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4). This allows entire files to be included in the data. Use this when the form includes any `<input type="file">` element. |
 | `text/plain` | [HTML 5 specification](https://www.w3.org/TR/html5/forms.html#text/plain-encoding-algorithm). Not recommended. Do not use it unless for debugging. |
-| `application/json` | Personally not recommended for common POST requests. Use it only if you really need to post complex data with user credentials. Besides, for CORS requests, setting the content type to anything other than `application/x-www-form-urlencoded`, `multipart/form-data`, or `text/plain` will trigger the browser to send a preflight OPTIONS request to the server. |
+| `application/json` | **Personally** not recommended for common POST requests. Make sure you really need to post complex data with user credentials. Additionally, for CORS requests, setting the content type to anything other than `application/x-www-form-urlencoded`, `multipart/form-data`, or `text/plain` will trigger the browser to send a preflight OPTIONS request to the server. |
 
 ## `responseType`
 
