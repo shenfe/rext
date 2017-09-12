@@ -75,12 +75,14 @@ function send(options) {
     };
 
     request.ontimeout = function () {
-        thenDo.error.call(thenDo, null, {
+        var r = {
             status: {
                 code: 500,
                 message: 'timeout'
             }
-        });
+        };
+        thenDo.error.call(thenDo, null, r);
+        thenDo.always.call(thenDo, null, r);
     };
 
     /* Set an empty handler for 'onprogress' so requests don't get aborted */
@@ -134,22 +136,24 @@ function send(options) {
     };
 
     request.onerror = function () {
-        thenDo.error.call(thenDo, request.responseText, {
+        var args = [request.responseText, {
             status: {
                 code: 500,
                 message: 'error'
             },
             text: request.responseText
-        });
+        }];
+        thenDo.error.apply(thenDo, args);
+        thenDo.always.apply(thenDo, args);
     };
 
-    var isPost = (typeof options.type === 'string' && options.type.toLowerCase() === 'post');
+    var isntGet = (typeof options.type === 'string' && options.type.toLowerCase() !== 'get');
     var paramData = Util.param(options.data);
 
-    request.open(options.type, (isPost || !paramData) ? options.url : (options.url + (options.url.indexOf('?') > 0 ? '&' : '?') + paramData));
+    request.open(options.type, (isntGet || !paramData) ? options.url : (options.url + (options.url.indexOf('?') > 0 ? '&' : '?') + paramData));
 
     window.setTimeout(function () {
-        request.send(isPost ? paramData : '');
+        request.send(isntGet ? paramData : '');
     }, 0);
 
     return _this;

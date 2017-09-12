@@ -319,7 +319,7 @@ var defaults = {
     url: null,
     data: {},
     headers: {
-        'Content-type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'X-Requested-With': 'XMLHttpRequest'
     },
     responseType: 'text',
@@ -395,10 +395,10 @@ function send(options) {
     };
 
     /* Setup the request */
-    var isPost = (typeof settings.type === 'string' && settings.type.toLowerCase() === 'post');
+    var isntGet = (typeof settings.type === 'string' && settings.type.toLowerCase() !== 'get');
     var paramData = param(settings.data);
     request.open(settings.type,
-        (isPost || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
+        (isntGet || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
         true);
     request.responseType = settings.responseType;
 
@@ -415,8 +415,8 @@ function send(options) {
     }
 
     /* Send the request */
-    if (isPost) {
-        request.send(/application\/json/i.test(settings.headers['Content-type'])
+    if (isntGet) {
+        request.send(/application\/json/i.test(settings.headers['Content-Type'])
             ? JSON.stringify(settings.data)
             : paramData
         );
@@ -545,12 +545,14 @@ function send$1(options) {
     };
 
     request.ontimeout = function () {
-        thenDo.error.call(thenDo, null, {
+        var r = {
             status: {
                 code: 500,
                 message: 'timeout'
             }
-        });
+        };
+        thenDo.error.call(thenDo, null, r);
+        thenDo.always.call(thenDo, null, r);
     };
 
     /* Set an empty handler for 'onprogress' so requests don't get aborted */
@@ -604,22 +606,24 @@ function send$1(options) {
     };
 
     request.onerror = function () {
-        thenDo.error.call(thenDo, request.responseText, {
+        var args = [request.responseText, {
             status: {
                 code: 500,
                 message: 'error'
             },
             text: request.responseText
-        });
+        }];
+        thenDo.error.apply(thenDo, args);
+        thenDo.always.apply(thenDo, args);
     };
 
-    var isPost = (typeof options.type === 'string' && options.type.toLowerCase() === 'post');
+    var isntGet = (typeof options.type === 'string' && options.type.toLowerCase() !== 'get');
     var paramData = param(options.data);
 
-    request.open(options.type, (isPost || !paramData) ? options.url : (options.url + (options.url.indexOf('?') > 0 ? '&' : '?') + paramData));
+    request.open(options.type, (isntGet || !paramData) ? options.url : (options.url + (options.url.indexOf('?') > 0 ? '&' : '?') + paramData));
 
     window.setTimeout(function () {
-        request.send(isPost ? paramData : '');
+        request.send(isntGet ? paramData : '');
     }, 0);
 
     return _this;
@@ -896,27 +900,49 @@ function send$3(options) {
     return _this;
 }
 
-function xhr(options) {
-    var isCrossDomain$$1 = isCrossDomain(options.url);
+function rext(options) {
     var args = [].slice.call(arguments);
+
+    var isJsonp = !!options.jsonp || options.dataType === 'jsonp' || options.responseType === 'jsonp';
+    if (isJsonp) {
+        return send$2.apply(null, args);
+    }
+
+    var isCrossDomain$$1 = isCrossDomain(options.url);
+
+    if (!options.type && typeof options.method === 'string') options.type = options.method;
+    if (typeof options.type !== 'string') options.type = 'get';
+    options.type = options.type.toLowerCase();
+    var isntGet = options.type !== 'get';
+
+    if (!options.headers) options.headers = {};
+    if (options.contentType) {
+        if (!options.headers['Content-Type'])
+            options.headers['Content-Type'] = options.contentType;
+        else
+            delete options.contentType;
+    }
+    if (!options.headers['Content-Type'])
+        options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
+    if (typeof options.responseType !== 'string') {
+        if (typeof options.dataType === 'string' && /^(text|json|xml|html)$/i.test(options.dataType))
+            options.responseType = options.dataType;
+        else
+            options.responseType = 'text';
+    }
+
+    var forceIframe = !!options.agent;
+
     if (!isCrossDomain$$1 || corsSupported) {
         return send.apply(null, args);
-    } else if (supported$1 && !options.withCredentials) {
+    } else if (!forceIframe && supported$1 && !options.withCredentials && !isntGet && !(/\/json/i.test(options.headers['Content-Type']))) {
         return send$1.apply(null, args);
     } else {
         return send$3.apply(null, args);
     }
 }
 
-var index = function (options) {
-    var args = [].slice.call(arguments);
-    if (options.jsonp) {
-        return send$2.apply(null, args);
-    } else {
-        return xhr.apply(null, args);
-    }
-};
-
-return index;
+return rext;
 
 })));

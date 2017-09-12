@@ -92,6 +92,14 @@
                 <td class="tg-baqh">y</td>
                 <td class="tg-baqh"><button type="button" onclick="post3()">post3</button></td>
             </tr>
+            <tr>
+                <td class="tg-baqh">POST</td>
+                <td class="tg-baqh">application/json</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh"><button type="button" onclick="post4()">post4</button></td>
+            </tr>
         </table>
         <div><pre id="output"></pre></div>
         <script src="http://localhost:4011/rext.js" charset="utf-8"></script>
@@ -163,6 +171,17 @@
                     data: {
                         city: 'c3'
                     },
+                    url: 'http://localhost:4011/post3',
+                    withCredentials: true
+                }).success(output).error(output);
+            }
+            function post4() {
+                rext({
+                    type: 'post',
+                    data: {
+                        city: 'c4'
+                    },
+                    contentType: 'application/json',
                     url: 'http://localhost:4011/post3',
                     withCredentials: true
                 }).success(output).error(output);

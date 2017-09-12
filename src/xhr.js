@@ -26,7 +26,7 @@ var defaults = {
     url: null,
     data: {},
     headers: {
-        'Content-type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'X-Requested-With': 'XMLHttpRequest'
     },
     responseType: 'text',
@@ -102,10 +102,10 @@ function send(options) {
     };
 
     /* Setup the request */
-    var isPost = (typeof settings.type === 'string' && settings.type.toLowerCase() === 'post');
+    var isntGet = (typeof settings.type === 'string' && settings.type.toLowerCase() !== 'get');
     var paramData = Util.param(settings.data);
     request.open(settings.type,
-        (isPost || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
+        (isntGet || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
         true);
     request.responseType = settings.responseType;
 
@@ -122,8 +122,8 @@ function send(options) {
     }
 
     /* Send the request */
-    if (isPost) {
-        request.send(/application\/json/i.test(settings.headers['Content-type'])
+    if (isntGet) {
+        request.send(/application\/json/i.test(settings.headers['Content-Type'])
             ? JSON.stringify(settings.data)
             : paramData
         );

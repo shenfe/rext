@@ -44,13 +44,15 @@ Instructions of the option object:
 
 | Property | Value |
 | :---: | :--- |
-| jsonp | undefined (default), true. |
-| type | 'get' (default), 'post'. |
-| url | The resource url string. |
-| data | The data to send. Object recommended. |
-| withCredentials | false (default), true. The `withCredentials` property of the request. |
-| responseType | 'text' (default), 'json', .etc. Like the `dataType` in jQuery ajax. |
-| headers | The request headers object. Usually define the `Content-Type` property (like the `contentType` in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
+| `jsonp` | undefined (default), true. |
+| `type` | 'get' (default), 'post'. |
+| `url` | The resource url string. |
+| `data` | The data to send. Object recommended. |
+| `withCredentials` | false (default), true. The `withCredentials` property of the request. |
+| `agent` | Whether fallback to the iframe agent when the browser is IE 9-. |
+| `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Like the `dataType` in jQuery ajax. |
+| `headers` | The request headers object. Usually define the `Content-Type` property (like the `contentType` in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
+| `contentType` | The same as `header['Content-Type']`. |
 
 ## Matrix
 All the cases of requests.
@@ -68,24 +70,22 @@ All the cases of requests.
 
 ## `headers['Content-Type']`
 
-The MIME type of data to send.
+The MIME type of data to send, like the `contentType` in jQuery ajax.
 
 | Value | Effect |
 | :---: | :--- |
 | `application/x-www-form-urlencoded` | The default, recommended. Almost the same as the url query string. |
 | `multipart/form-data` | [HTML 4 specification](https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4). This allows entire files to be included in the data. Use this when the form includes any `<input type="file">` element. |
 | `text/plain` | [HTML 5 specification](https://www.w3.org/TR/html5/forms.html#text/plain-encoding-algorithm). Not recommended. Do not use it unless for debugging. |
-| `application/json` | Not recommended. For CORS requests, setting the content type to anything other than application/x-www-form-urlencoded, multipart/form-data, or text/plain will trigger the browser to send a preflight OPTIONS request to the server. |
+| `application/json` | Personally not recommended for common POST requests. Use it only if you really need to post complex data with user credentials. Besides, for CORS requests, setting the content type to anything other than `application/x-www-form-urlencoded`, `multipart/form-data`, or `text/plain` will trigger the browser to send a preflight OPTIONS request to the server. |
 
 ## `responseType`
 
-The alias of the expected MIME type of data to receive. This option affects the request header `Accept`, relating the response header `Content-Type`.
+The alias of the expected MIME type of data to receive, similar to the `dataType` in jQuery ajax. This option affects the request header `Accept`, relating the response header `Content-Type`. However, **a simple trial of JSON parsing** would be conducted then regardless of the type of response data...
 
 | Value | MIME Type |
 | :---: | :--- |
-| text | Default, recommended. |
-| json | Recommended. |
-| xml | - |
-| html | - |
-| script | - |
-| jsonp | - |
+| text | Default. |
+| json | - |
+| xml | Seldom. |
+| html | Seldom. |
