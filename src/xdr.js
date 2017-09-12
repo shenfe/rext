@@ -18,7 +18,7 @@ var defaults = {
  * @return {Object}             Chained success/error/always methods
  */
 function send(options) {
-    options = Util.extend(defaults, options || {});
+    options = Util.extend({}, defaults, options || {});
 
     /* Only if the request: uses GET or POST method, has HTTP or HTTPS protocol, has the same scheme as the calling page */
     if (!getOrPostRegEx.test(options.type) || !httpRegEx.test(options.url) || !sameSchemeRegEx.test(options.url)) {

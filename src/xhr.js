@@ -57,7 +57,7 @@ function parseResponse(req) {
  * @return {Object}             Chained success/error/always methods
  */
 function send(options) {
-    var settings = Util.extend(defaults, options || {});
+    var settings = Util.extend({}, defaults, options || {});
     var id = Util.gid();
 
     /* Then-do methods */

@@ -226,6 +226,7 @@ var shrinkArray = function (arr, len) {
 
 var extend = function (dest, srcs, clean) {
     if (!isObject(dest)) return null;
+    clean = arguments[arguments.length - 1] === true ? true : false;
     var args = Array.prototype.slice.call(arguments, 1,
         arguments[arguments.length - 1] === true ? (arguments.length - 1) : arguments.length);
 
@@ -347,7 +348,7 @@ function parseResponse(req) {
  * @return {Object}             Chained success/error/always methods
  */
 function send(options) {
-    var settings = extend(defaults, options || {});
+    var settings = extend({}, defaults, options || {});
     var id = gid();
 
     /* Then-do methods */
@@ -477,7 +478,7 @@ var defaults$1 = {
  * @return {Object}             Chained success/error/always methods
  */
 function send$1(options) {
-    options = extend(defaults$1, options || {});
+    options = extend({}, defaults$1, options || {});
 
     /* Only if the request: uses GET or POST method, has HTTP or HTTPS protocol, has the same scheme as the calling page */
     if (!getOrPostRegEx.test(options.type) || !httpRegEx.test(options.url) || !sameSchemeRegEx.test(options.url)) {
