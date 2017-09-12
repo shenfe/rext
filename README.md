@@ -1,5 +1,5 @@
 # rext
-A light-weight request library, for all browsers.
+A light-weight (< 10kb minified) request library, for all browsers.
 
 ## Quick import
 
