@@ -5,7 +5,22 @@ A light-weight request library, for all browsers.
 
 Use `rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
 
-*If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, put `iframe-agent.html` at the root path of the origin.*
+## IE 9- Support
+
+If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, define the invoker-hostname whitelist in `iframe-agent.html` and put it at the root path of the origin.
+
+For example:
+
+Define the invoker-hostname whitelist:
+
+> Replace
+> ```js
+> [/* Define a whitelist of host names here, e.g. '.invoker.com'. */]
+> ```
+> with
+> ```js
+> ['.my-domain.com', '.my-domain1.com']
+> ```
 
 ## API
 
