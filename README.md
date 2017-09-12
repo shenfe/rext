@@ -1,9 +1,17 @@
 # rext
 A light-weight request library, for all browsers.
 
-## Usage
+## Quick import
 
-### XMLHttpRequest (or XDomainRequest)
+Use `rect.js` as a universal module ([umd](https://github.com/umdjs/umd)).
+
+*If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, put `iframe-agent.html` at the root path of the origin.*
+
+## API
+
+As simple as `rext(options).success(onSuccess).error(onError)`.
+
+### XMLHttpRequest
 
 ```js
 rext({
@@ -30,6 +38,20 @@ rext({
 });
 ```
 
+### Options
+
+Instructions of the option object:
+
+| Property | Value |
+| :---: | :--- |
+| jsonp | undefined (default), true. |
+| type | 'get' (default), 'post'. |
+| url | The resource url string. |
+| data | The data to send. Object recommended. |
+| withCredentials | false (default), true. The `withCredentials` property of the request. |
+| responseType | 'text' (default), 'json', .etc. Like the `dataType` in jQuery ajax. |
+| headers | The request headers object. Usually define the `Content-Type` property (like the `contentType` in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
+
 ## Matrix
 All the cases of requests.
 
@@ -44,7 +66,7 @@ All the cases of requests.
 | - | - | - | JSONP | - | [Security concerns](https://en.wikipedia.org/wiki/JSONP#Security_concerns) |
 | - | - | - | iframe agent | - | - |
 
-## `headers['Content-type']`
+## `headers['Content-Type']`
 
 The MIME type of data to send.
 
