@@ -1,6 +1,35 @@
 # rext
 A light-weight request library, for all browsers.
 
+## Usage
+
+### XMLHttpRequest (or XDomainRequest)
+
+```js
+rext({
+    url: '/path/to/resource',
+    data: { /**/ }
+}).success((data, response) => {
+    /**/
+}).error((data, response) =>{
+    /**/
+}).always((data, response) =>{
+    /**/
+});
+```
+
+### JSONP
+
+```js
+rext({
+    jsonp: true,
+    url: '/path/to/resource',
+    data: { /**/ }
+}, data => {
+    /**/
+});
+```
+
 ## Matrix
 All the cases of requests.
 
@@ -15,26 +44,26 @@ All the cases of requests.
 | - | - | - | JSONP | - | [Security concerns](https://en.wikipedia.org/wiki/JSONP#Security_concerns) |
 | - | - | - | iframe agent | - | - |
 
-## `contentType`
+## `headers['Content-type']`
 
-The MIME type of data to send. This option affects the request header `Content-Type`.
+The MIME type of data to send.
 
 | Value | Effect |
 | :---: | :--- |
-| `application/x-www-form-urlencoded` (default) | - |
-| `multipart/form-data` | - |
-| `text/plain` | - |
-| `application/json` | For cross-domain requests, setting the content type to anything other than application/x-www-form-urlencoded, multipart/form-data, or text/plain will trigger the browser to send a preflight OPTIONS request to the server. |
+| `application/x-www-form-urlencoded` | The default, recommended. Almost the same as the url query string. |
+| `multipart/form-data` | [HTML 4 specification](https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4). This allows entire files to be included in the data. Use this when the form includes any `<input type="file">` element. |
+| `text/plain` | [HTML 5 specification](https://www.w3.org/TR/html5/forms.html#text/plain-encoding-algorithm). Not recommended. Do not use it unless for debugging. |
+| `application/json` | Not recommended. For CORS requests, setting the content type to anything other than application/x-www-form-urlencoded, multipart/form-data, or text/plain will trigger the browser to send a preflight OPTIONS request to the server. |
 
-## `dataType`
+## `responseType`
 
-The alias of the MIME type of data to receive. This option affects the request header `Accept`, relating the response header `Content-Type`.
+The alias of the expected MIME type of data to receive. This option affects the request header `Accept`, relating the response header `Content-Type`.
 
 | Value | MIME Type |
 | :---: | :--- |
+| text | Default, recommended. |
+| json | Recommended. |
 | xml | - |
 | html | - |
 | script | - |
-| json | - |
 | jsonp | - |
-| text | - |

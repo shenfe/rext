@@ -37,6 +37,4 @@ function send(options, callback) {
     }
 }
 
-export {
-    send
-}
+export default send

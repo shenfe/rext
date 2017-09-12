@@ -4,18 +4,28 @@ var httpRegEx = /^(https?:)?\/\//i;
 var getOrPostRegEx = /^get|post$/i;
 var sameSchemeRegEx = new RegExp('^(\/\/|' + window.location.protocol + ')', 'i');
 
+/* Default settings */
+var defaults = {
+    type: 'GET',
+    url: null,
+    data: {},
+    responseType: 'text'
+};
+
 /**
  * Make an XDomainRequest (IE 8-9)
  * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
  */
 function send(options) {
+    options = Util.extend(defaults, options || {});
+
     /* Only if the request: uses GET or POST method, has HTTP or HTTPS protocol, has the same scheme as the calling page */
     if (!getOrPostRegEx.test(options.type) || !httpRegEx.test(options.url) || !sameSchemeRegEx.test(options.url)) {
         return;
     }
 
-    var dataType = (options.dataType || 'json').toLowerCase();
+    var dataType = (options.responseType || 'json').toLowerCase();
 
     var request = new XDomainRequest();
 
@@ -72,7 +82,7 @@ function send(options) {
                 'Content-Type': request.contentType
             },
             text: request.responseText,
-            data: undefined
+            data: request.responseText
         };
 
         if (dataType === 'html' || /text\/html/i.test(request.contentType)) {

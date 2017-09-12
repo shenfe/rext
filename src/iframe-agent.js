@@ -1,6 +1,6 @@
 import * as XHR from './xhr.js'
 
-var localOrigin = window.location.origin;
+var localOrigin = window.location.protocol + '//' + window.location.host;
 
 /**
  * Add event listener.

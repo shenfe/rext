@@ -1,8 +1,72 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.rext = {})));
-}(this, (function (exports) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.rext = factory());
+}(this, (function () { 'use strict';
+
+// Production steps of ECMA-262, Edition 5, 15.4.4.18
+// Reference: http://es5.github.io/#x15.4.4.18
+if (!Array.prototype.forEach) {
+
+    Array.prototype.forEach = function (callback /*, thisArg*/ ) {
+
+        var T, k;
+
+        if (this == null) {
+            throw new TypeError('this is null or not defined');
+        }
+
+        // 1. Let O be the result of calling toObject() passing the
+        // |this| value as the argument.
+        var O = Object(this);
+
+        // 2. Let lenValue be the result of calling the Get() internal
+        // method of O with the argument "length".
+        // 3. Let len be toUint32(lenValue).
+        var len = O.length >>> 0;
+
+        // 4. If isCallable(callback) is false, throw a TypeError exception.
+        // See: http://es5.github.com/#x9.11
+        if (typeof callback !== 'function') {
+            throw new TypeError(callback + ' is not a function');
+        }
+
+        // 5. If thisArg was supplied, let T be thisArg; else let
+        // T be undefined.
+        if (arguments.length > 1) {
+            T = arguments[1];
+        }
+
+        // 6. Let k be 0.
+        k = 0;
+
+        // 7. Repeat while k < len.
+        while (k < len) {
+
+            var kValue;
+
+            // a. Let Pk be ToString(k).
+            //    This is implicit for LHS operands of the in operator.
+            // b. Let kPresent be the result of calling the HasProperty
+            //    internal method of O with argument Pk.
+            //    This step can be combined with c.
+            // c. If kPresent is true, then
+            if (k in O) {
+
+                // i. Let kValue be the result of calling the Get internal
+                // method of O with argument Pk.
+                kValue = O[k];
+
+                // ii. Call the Call internal method of callback with T as
+                // the this value and argument list containing kValue, k, and O.
+                callback.call(T, kValue, k, O);
+            }
+            // d. Increase k by 1.
+            k++;
+        }
+        // 8. return undefined.
+    };
+}
 
 var gid = (function () {
     var n = 0;
@@ -399,18 +463,28 @@ var httpRegEx = /^(https?:)?\/\//i;
 var getOrPostRegEx = /^get|post$/i;
 var sameSchemeRegEx = new RegExp('^(\/\/|' + window.location.protocol + ')', 'i');
 
+/* Default settings */
+var defaults$1 = {
+    type: 'GET',
+    url: null,
+    data: {},
+    responseType: 'text'
+};
+
 /**
  * Make an XDomainRequest (IE 8-9)
  * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
  */
 function send$1(options) {
+    options = extend(defaults$1, options || {});
+
     /* Only if the request: uses GET or POST method, has HTTP or HTTPS protocol, has the same scheme as the calling page */
     if (!getOrPostRegEx.test(options.type) || !httpRegEx.test(options.url) || !sameSchemeRegEx.test(options.url)) {
         return;
     }
 
-    var dataType = (options.dataType || 'json').toLowerCase();
+    var dataType = (options.responseType || 'json').toLowerCase();
 
     var request = new XDomainRequest();
 
@@ -467,7 +541,7 @@ function send$1(options) {
                 'Content-Type': request.contentType
             },
             text: request.responseText,
-            data: undefined
+            data: request.responseText
         };
 
         if (dataType === 'html' || /text\/html/i.test(request.contentType)) {
@@ -561,22 +635,15 @@ function send$2(options, callback) {
     }
 }
 
-
-
-
-var jsonp = Object.freeze({
-	send: send$2
-});
-
 /**
  * Parse the origin from a url string.
  * @param  {String} url [description]
  * @return {String}     [description]
  */
 function parseOrigin(url) {
-    var aTag = window.document.createElement('a');
-    aTag.href = url;
-    return aTag.origin;
+    var atag = window.document.createElement('a');
+    atag.href = url;
+    return atag.protocol + '//' + atag.host;
 }
 
 /**
@@ -709,10 +776,10 @@ function messageEventHandler(e) {
             var iframe = window.document.getElementById(getIframeId(msg.origin));
             if (waitingRequestTable[msg.origin]) {
                 waitingRequestTable[msg.origin].forEach(function (req) {
-                    iframe.postMessage(req, msg.origin);
+                    iframe.contentWindow.postMessage(req, msg.origin);
                 });
+                waitingRequestTable[msg.origin].length = 0;
             }
-            waitingRequestTable[msg.origin].length = 0;
             delete waitingRequestTable[msg.origin];
             break;
         case 'iframe-agent-response':
@@ -749,7 +816,7 @@ function doOnReady(agentOrigin, iframe, requestId, requestOption) {
         data: requestOption
     };
     if (agentStatusTable[agentOrigin]) {
-        iframe.postMessage(JSON.stringify(msg), agentOrigin);
+        iframe.contentWindow.postMessage(JSON.stringify(msg), agentOrigin);
     } else {
         if (!waitingRequestTable[agentOrigin]) {
             waitingRequestTable[agentOrigin] = [];
@@ -760,13 +827,13 @@ function doOnReady(agentOrigin, iframe, requestId, requestOption) {
 
 /**
  * Main function.
- * @param  {Object} option The request option
- * @return {[type]}        [description]
+ * @param  {Object} options The request option
+ * @return {[type]}         [description]
  */
-function send$3(option) {
-    var targetOrigin = parseOrigin(option.url);
-    if (option.agentPageUrl) {
-        originAgentUrlTable[targetOrigin] = option.agentPageUrl;
+function send$3(options) {
+    var targetOrigin = parseOrigin(options.url);
+    if (options.agentPageUrl) {
+        originAgentUrlTable[targetOrigin] = options.agentPageUrl;
     }
     var thenDo = {
         success: options.success || arguments[1] || function () {},
@@ -779,7 +846,7 @@ function send$3(option) {
     callbackTable[targetOrigin][id] = thenDo;
 
     var iframe = getIframe(targetOrigin);
-    doOnReady(targetOrigin, iframe, id, option);
+    doOnReady(targetOrigin, iframe, id, options);
 
     /* Setup chaining */
     var _this = {
@@ -805,16 +872,22 @@ function xhr(options) {
     var args = [].slice.call(arguments);
     if (!isCrossDomain$$1 || corsSupported) {
         return send.apply(null, args);
-    } else if (supported$1) {
+    } else if (supported$1 && !options.withCredentials) {
         return send$1.apply(null, args);
     } else {
         return send$3.apply(null, args);
     }
 }
 
-exports.xhr = xhr;
-exports.jsonp = jsonp;
+var index = function (options) {
+    var args = [].slice.call(arguments);
+    if (options.jsonp) {
+        return send$2.apply(null, args);
+    } else {
+        return xhr.apply(null, args);
+    }
+};
 
-Object.defineProperty(exports, '__esModule', { value: true });
+return index;
 
 })));

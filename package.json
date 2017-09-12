@@ -9,6 +9,7 @@
         "test": "node ./test/server.js"
     },
     "devDependencies": {
+        "body-parser": "^1.18.0",
         "cookie-parser": "^1.4.3",
         "express": "^4.15.4",
         "ip": "^1.1.5",

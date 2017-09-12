@@ -53,28 +53,44 @@
                 <td class="tg-baqh"><button type="button" onclick="get3()">get3</button></td>
             </tr>
             <tr>
+                <td class="tg-baqh">POST</td>
                 <td class="tg-baqh">-</td>
                 <td class="tg-baqh">-</td>
+                <td class="tg-baqh">n</td>
                 <td class="tg-baqh">-</td>
-                <td class="tg-baqh">-</td>
-                <td class="tg-baqh">-</td>
-                <td class="tg-baqh">-</td>
+                <td class="tg-baqh"><button type="button" onclick="post1_1()">post1_1</button></td>
             </tr>
             <tr>
+                <td class="tg-baqh">POST</td>
                 <td class="tg-baqh">-</td>
                 <td class="tg-baqh">-</td>
+                <td class="tg-baqh">n</td>
                 <td class="tg-baqh">-</td>
-                <td class="tg-baqh">-</td>
-                <td class="tg-baqh">-</td>
-                <td class="tg-baqh">-</td>
+                <td class="tg-baqh"><button type="button" onclick="post1_2()">post1_2</button></td>
             </tr>
             <tr>
+                <td class="tg-baqh">POST</td>
                 <td class="tg-baqh">-</td>
                 <td class="tg-baqh">-</td>
+                <td class="tg-baqh">n</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh"><button type="button" onclick="post1_3()">post1_3</button></td>
+            </tr>
+            <tr>
+                <td class="tg-baqh">POST</td>
                 <td class="tg-baqh">-</td>
                 <td class="tg-baqh">-</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh">-</td>
+                <td class="tg-baqh"><button type="button" onclick="post2()">post2</button></td>
+            </tr>
+            <tr>
+                <td class="tg-baqh">POST</td>
                 <td class="tg-baqh">-</td>
                 <td class="tg-baqh">-</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh">y</td>
+                <td class="tg-baqh"><button type="button" onclick="post3()">post3</button></td>
             </tr>
         </table>
         <div><pre id="output"></pre></div>
@@ -87,18 +103,64 @@
                 $output.innerHTML = JSON.stringify(data, null, 4);
             }
             function get1() {
-                rext.xhr({
-                    url: '/1.json'
+                rext({
+                    url: '/get1'
                 }).success(output).error(output);
             }
             function get2() {
-                rext.xhr({
-                    url: 'http://localhost:4011/2.json'
+                rext({
+                    url: 'http://localhost:4011/get2'
                 }).success(output).error(output);
             }
             function get3() {
-                rext.xhr({
-                    url: 'http://localhost:4011/2.json',
+                rext({
+                    url: 'http://localhost:4011/get3',
+                    withCredentials: true
+                }).success(output).error(output);
+            }
+            function post1_1() {
+                rext({
+                    type: 'post',
+                    data: {
+                        city: 'c1_1'
+                    },
+                    url: '/post1_1'
+                }).success(output).error(output);
+            }
+            function post1_2() {
+                rext({
+                    type: 'post',
+                    data: {
+                        city: 'c1_2'
+                    },
+                    url: '/post1_2'
+                }).success(output).error(output);
+            }
+            function post1_3() {
+                rext({
+                    type: 'post',
+                    data: {
+                        city: 'c1_3'
+                    },
+                    url: '/post1_3'
+                }).success(output).error(output);
+            }
+            function post2() {
+                rext({
+                    type: 'post',
+                    data: {
+                        city: 'c2'
+                    },
+                    url: 'http://localhost:4011/post2'
+                }).success(output).error(output);
+            }
+            function post3() {
+                rext({
+                    type: 'post',
+                    data: {
+                        city: 'c3'
+                    },
+                    url: 'http://localhost:4011/post3',
                     withCredentials: true
                 }).success(output).error(output);
             }
