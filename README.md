@@ -82,8 +82,8 @@ Instructions of the option object:
 | `data` | The data to send. Object recommended. |
 | `withCredentials` | false (default), true. The `withCredentials` property of the request. Whether to send use credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is OK as well. |
 | `agent` | Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
-| `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. |
-| `headers` | The request headers object. Usually define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
+| `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. See below for more. |
+| `headers` | The request headers object. Usually define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
 | `contentType` | The same as `header['Content-Type']`. |
 | `jsonp` | undefined (default), true. If `responseType` (or `dataType`) is set `jsonp`, this would be true as well. |
 
@@ -103,7 +103,7 @@ All the cases of requests.
 
 ## `headers['Content-Type']`
 
-The MIME type of data to send, like the `contentType` in jQuery ajax.
+The MIME type of data to **send**, like the `contentType` in jQuery ajax.
 
 | Value | Effect |
 | :---: | :--- |
@@ -114,7 +114,7 @@ The MIME type of data to send, like the `contentType` in jQuery ajax.
 
 ## `responseType`
 
-The alias of the expected MIME type of data to receive, similar to the `dataType` in jQuery ajax. This option affects the request header `Accept`, relating the response header `Content-Type`. However, **a simple trial of JSON parsing** would be conducted then regardless of the type of response data...
+The alias of the expected MIME type of data to **receive**, similar to the `dataType` in jQuery ajax. This option affects the request header `Accept`, relating the response header `Content-Type`. However, **a simple trial of JSON parsing** would be conducted then regardless of the type of response data...
 
 | Value | MIME Type |
 | :---: | :--- |
