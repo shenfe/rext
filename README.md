@@ -30,6 +30,20 @@ rext({
 });
 ```
 
+### Options
+
+Instructions of the option object:
+
+| Property | Value |
+| :---: | :--- |
+| jsonp | undefined (default), true. |
+| type | 'get' (default), 'post'. |
+| url | The resource url string. |
+| data | The data to send. Object recommended. |
+| withCredentials | false (default), true. The `withCredentials` property of the request. |
+| responseType | 'text' (default), 'json', .etc. Like the `dataType` in jQuery ajax. |
+| headers | The request headers object. Usually define the `Content-Type` property (like the `contentType` in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
+
 ## Matrix
 All the cases of requests.
 
