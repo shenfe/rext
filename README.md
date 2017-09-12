@@ -3,6 +3,8 @@ A light-weight request library, for all browsers.
 
 ## Usage
 
+As simple as `rext(options).success(onSuccess).error(onError)`.
+
 ### XMLHttpRequest (or XDomainRequest)
 
 ```js
