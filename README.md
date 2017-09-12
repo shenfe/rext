@@ -81,7 +81,7 @@ Instructions of the option object:
 | `url` | The resource url string. |
 | `data` | The data to send. Object recommended. |
 | `withCredentials` | false (default), true. The `withCredentials` property of the request. Whether to send use credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is OK as well. |
-| `agent` | Whether to fallback to the iframe agent when the browser is IE 9-. |
+| `agent` | Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
 | `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. |
 | `headers` | The request headers object. Usually define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
 | `contentType` | The same as `header['Content-Type']`. |
