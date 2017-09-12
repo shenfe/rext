@@ -1,7 +1,13 @@
 # rext
 A light-weight request library, for all browsers.
 
-## Usage
+## Quick import
+
+Use `rect.js` as a universal module ([umd](https://github.com/umdjs/umd)).
+
+*If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, put `iframe-agent.html` at the root path of the origin.*
+
+## API
 
 As simple as `rext(options).success(onSuccess).error(onError)`.
 
