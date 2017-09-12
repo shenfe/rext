@@ -3,13 +3,31 @@ A light-weight request library, for all browsers.
 
 ## Quick import
 
-Use `rect.js` as a universal module ([umd](https://github.com/umdjs/umd)).
+Use `rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
 
 *If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, put `iframe-agent.html` at the root path of the origin.*
 
 ## API
 
 As simple as `rext(options).success(onSuccess).error(onError)`.
+
+Besides, it shares the similar format of the Option object as jQuery ajax:
+
+```js
+{
+    type: 'post',
+    url: '/path/to/api',
+    data: {},
+    contentType: 'application/json',
+    dataType: 'json',
+    xhrFields: {
+        withCredentials: true
+    },
+    success: function () { /**/ },
+    error: function () { /**/ },
+    complete: function () { /**/ }
+}
+```
 
 ### XMLHttpRequest
 
@@ -44,15 +62,15 @@ Instructions of the option object:
 
 | Property | Value |
 | :---: | :--- |
-| `jsonp` | undefined (default), true. |
 | `type` | 'get' (default), 'post'. |
 | `url` | The resource url string. |
 | `data` | The data to send. Object recommended. |
-| `withCredentials` | false (default), true. The `withCredentials` property of the request. |
-| `agent` | Whether fallback to the iframe agent when the browser is IE 9-. |
-| `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Like the `dataType` in jQuery ajax. |
-| `headers` | The request headers object. Usually define the `Content-Type` property (like the `contentType` in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
+| `withCredentials` | false (default), true. The `withCredentials` property of the request. Whether to send use credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is OK as well. |
+| `agent` | Whether to fallback to the iframe agent when the browser is IE 9-. |
+| `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. |
+| `headers` | The request headers object. Usually define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. |
 | `contentType` | The same as `header['Content-Type']`. |
+| `jsonp` | undefined (default), true. If `responseType` (or `dataType`) is set `jsonp`, this would be true as well. |
 
 ## Matrix
 All the cases of requests.

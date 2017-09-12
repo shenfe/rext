@@ -910,6 +910,9 @@ function rext(options) {
 
     var isCrossDomain$$1 = isCrossDomain(options.url);
 
+    var isWithCredentials = !!options.withCredentials || (options.xhrFields && !!options.xhrFields.withCredentials);
+    options.withCredentials = isWithCredentials;
+
     if (!options.type && typeof options.method === 'string') options.type = options.method;
     if (typeof options.type !== 'string') options.type = 'get';
     options.type = options.type.toLowerCase();
@@ -932,11 +935,16 @@ function rext(options) {
             options.responseType = 'text';
     }
 
+    if (options.complete) {
+        options.always = options.complete;
+        delete options.complete;
+    }
+
     var forceIframe = !!options.agent;
 
     if (!isCrossDomain$$1 || corsSupported) {
         return send.apply(null, args);
-    } else if (!forceIframe && supported$1 && !options.withCredentials && !isntGet && !(/\/json/i.test(options.headers['Content-Type']))) {
+    } else if (!forceIframe && supported$1 && !isWithCredentials && !isntGet && !(/\/json/i.test(options.headers['Content-Type']))) {
         return send$1.apply(null, args);
     } else {
         return send$3.apply(null, args);

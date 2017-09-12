@@ -15,7 +15,8 @@ function rext(options) {
 
     var isCrossDomain = Util.isCrossDomain(options.url);
 
-    var isWithCredentials = !!options.withCredentials;
+    var isWithCredentials = !!options.withCredentials || (options.xhrFields && !!options.xhrFields.withCredentials);
+    options.withCredentials = isWithCredentials;
 
     if (!options.type && typeof options.method === 'string') options.type = options.method;
     if (typeof options.type !== 'string') options.type = 'get';
@@ -39,11 +40,16 @@ function rext(options) {
             options.responseType = 'text';
     }
 
+    if (options.complete) {
+        options.always = options.complete;
+        delete options.complete;
+    }
+
     var forceIframe = !!options.agent;
 
     if (!isCrossDomain || XHR.corsSupported) {
         return XHR.send.apply(null, args);
-    } else if (!forceIframe && XDR.supported && !options.withCredentials && !isntGet && !(/\/json/i.test(options.headers['Content-Type']))) {
+    } else if (!forceIframe && XDR.supported && !isWithCredentials && !isntGet && !(/\/json/i.test(options.headers['Content-Type']))) {
         return XDR.send.apply(null, args);
     } else {
         return IframeAgent.send.apply(null, args);
