@@ -26,7 +26,7 @@ Define the invoker-hostname whitelist:
 
 As simple as `rext(options).success(onSuccess).error(onError)`.
 
-Besides, it shares the similar format of the Option object as jQuery ajax:
+Besides, the format of jQuery ajax's option object is also allowed:
 
 ```js
 {
