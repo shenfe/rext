@@ -109,7 +109,10 @@
             }
             function get2() {
                 rext({
-                    url: 'http://localhost:4011/get2'
+                    url: 'http://localhost:4011/get2',
+                    data: {
+                        city: 'bj'
+                    }
                 }).success(output).error(output);
             }
             function get3() {

@@ -143,10 +143,13 @@ function send(options) {
         });
     };
 
-    request.open(options.type, options.url);
+    var isPost = (typeof options.type === 'string' && options.type.toLowerCase() === 'post');
+    var paramData = Util.param(options.data);
+
+    request.open(options.type, (isPost || !paramData) ? options.url : (options.url + (options.url.indexOf('?') > 0 ? '&' : '?') + paramData));
 
     window.setTimeout(function () {
-        request.send(Util.param(options.data));
+        request.send(isPost ? paramData : '');
     }, 0);
 
     return _this;

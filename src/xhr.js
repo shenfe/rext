@@ -102,7 +102,11 @@ function send(options) {
     };
 
     /* Setup the request */
-    request.open(settings.type, settings.url, true);
+    var isPost = (typeof settings.type === 'string' && settings.type.toLowerCase() === 'post');
+    var paramData = Util.param(settings.data);
+    request.open(settings.type,
+        (isPost || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
+        true);
     request.responseType = settings.responseType;
 
     /* Set headers */
@@ -118,10 +122,14 @@ function send(options) {
     }
 
     /* Send the request */
-    request.send(/application\/json/i.test(settings.headers['Content-type'])
-        ? JSON.stringify(settings.data)
-        : Util.param(settings.data)
-    );
+    if (isPost) {
+        request.send(/application\/json/i.test(settings.headers['Content-type'])
+            ? JSON.stringify(settings.data)
+            : paramData
+        );
+    } else {
+        request.send('');
+    }
 
     if (request.readyState === 4) {
         window.setTimeout(xhrCallback);

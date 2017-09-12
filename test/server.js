@@ -80,13 +80,13 @@ const bodyParser = require('body-parser');
     });
 
     app.post('/post2', function (req, res) {
-        console.log(req.body);
+        console.log(req);
         res.json({
             code: 200,
             msg: 'ok',
             data: {
                 name: 'post2',
-                echo: req.body.json
+                echo: req.body
             }
         });
     });
@@ -110,7 +110,7 @@ const bodyParser = require('body-parser');
                 msg: 'ok',
                 data: {
                     name: 'post3',
-                    echo: req.body.json
+                    echo: req.body
                 }
             });
         } else {
@@ -152,7 +152,7 @@ const bodyParser = require('body-parser');
             msg: 'ok',
             data: {
                 name: 'post1_1',
-                echo: req.body.json
+                echo: req.body
             }
         });
     });
@@ -164,7 +164,7 @@ const bodyParser = require('body-parser');
             msg: 'ok',
             data: {
                 name: 'post1_2',
-                echo: req.body.json
+                echo: req.body
             }
         });
     });
@@ -176,7 +176,7 @@ const bodyParser = require('body-parser');
             msg: 'ok',
             data: {
                 name: 'post1_3',
-                echo: req.body.json
+                echo: req.body
             }
         });
     });

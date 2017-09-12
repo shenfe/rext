@@ -8,9 +8,9 @@ module.exports = {
         format: 'umd'
     },
     plugins: [
-        uglify({
-            // mangle: false,
-            ie8: true
-        })
+        // uglify({
+        //     // mangle: false,
+        //     ie8: true
+        // })
     ]
 };
