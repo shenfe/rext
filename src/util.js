@@ -84,30 +84,6 @@ var each = function (v, func, arrayReverse) {
                 if (r === false) break;
             }
         }
-    } else if (isNode(v)) {
-        var ret = false;
-        switch (v.nodeType) {
-            case Node.ELEMENT_NODE:
-                break;
-            case Node.TEXT_NODE:
-            case Node.COMMENT_NODE:
-            case Node.PROCESSING_INSTRUCTION_NODE:
-            case Node.DOCUMENT_NODE:
-            case Node.DOCUMENT_TYPE_NODE:
-            case Node.DOCUMENT_FRAGMENT_NODE:
-            default:
-                ret = true;
-        }
-        if (ret) return;
-        for (var i = 0, childNodes = v.childNodes, len = v.childNodes.length; i < len; i++) {
-            func(childNodes[i]);
-            each(childNodes[i], func);
-        }
-    } else if (isNamedNodeMap(v)) {
-        for (var i = 0, len = v.length; i < len; i++) {
-            var r = func(v[i]['nodeValue'], v[i]['nodeName']);
-            if (r === false) break;
-        }
     } else if (isFunction(v.forEach)) {
         v.forEach(func);
     }
