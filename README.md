@@ -5,7 +5,7 @@ A light-weight request library, for all browsers.
 
 As simple as `rext(options).success(onSuccess).error(onError)`.
 
-### XMLHttpRequest (or XDomainRequest)
+### XMLHttpRequest
 
 ```js
 rext({
