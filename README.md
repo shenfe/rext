@@ -60,7 +60,7 @@ All the cases of requests.
 | - | - | - | JSONP | - | [Security concerns](https://en.wikipedia.org/wiki/JSONP#Security_concerns) |
 | - | - | - | iframe agent | - | - |
 
-## `headers['Content-type']`
+## `headers['Content-Type']`
 
 The MIME type of data to send.
 
