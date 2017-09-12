@@ -80,6 +80,7 @@ const bodyParser = require('body-parser');
     });
 
     app.post('/post2', function (req, res) {
+        console.log(req.body);
         res.json({
             code: 200,
             msg: 'ok',
@@ -96,6 +97,7 @@ const bodyParser = require('body-parser');
     });
 
     app.post('/post3', function (req, res) {
+        console.log(req.body);
         res.header('Access-Control-Allow-Credentials', 'true');
         let ck = {
             cookies: req.cookies,
@@ -156,6 +158,7 @@ const bodyParser = require('body-parser');
     });
 
     app.post('/post1_2', function (req, res) {
+        console.log(req.body);
         res.json({
             code: 200,
             msg: 'ok',
@@ -167,6 +170,7 @@ const bodyParser = require('body-parser');
     });
 
     app.post('/post1_3', function (req, res) {
+        console.log(req.body);
         res.json({
             code: 200,
             msg: 'ok',

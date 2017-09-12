@@ -36,7 +36,7 @@ var defaults = {
 /**
  * Parse text response into JSON
  * @param  {String} req             The response
- * @return {String|JSON}            A JSON Object of the responseText, plus the orginal response
+ * @return {String|JSON}            A JSON object or string
  */
 function parseResponse(req) {
     var result;

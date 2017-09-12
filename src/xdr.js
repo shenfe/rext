@@ -13,6 +13,21 @@ var defaults = {
 };
 
 /**
+ * Parse text response into JSON
+ * @param  {String} req             The responseText
+ * @return {String|JSON}            A JSON object or string
+ */
+function parseResponseData(req) {
+    var result;
+    try {
+        result = JSON.parse(req);
+    } catch (e) {
+        result = req;
+    }
+    return result;
+}
+
+/**
  * Make an XDomainRequest (IE 8-9)
  * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
@@ -82,7 +97,7 @@ function send(options) {
                 'Content-Type': request.contentType
             },
             text: request.responseText,
-            data: request.responseText
+            data: parseResponseData(request.responseText)
         };
 
         if (dataType === 'html' || /text\/html/i.test(request.contentType)) {

@@ -94,7 +94,7 @@ var isFunction = function (v) {
 };
 
 var isObject = function (v) {
-    return Object.prototype.toString.call(v) === '[object Object]';
+    return v != null && Object.prototype.toString.call(v) === '[object Object]';
 };
 
 var isArray = function (v) {
@@ -226,9 +226,9 @@ var shrinkArray = function (arr, len) {
 
 var extend = function (dest, srcs, clean) {
     if (!isObject(dest)) return null;
-    clean = arguments[arguments.length - 1] === true ? true : false;
     var args = Array.prototype.slice.call(arguments, 1,
         arguments[arguments.length - 1] === true ? (arguments.length - 1) : arguments.length);
+    clean = arguments[arguments.length - 1] === true ? true : false;
 
     function extendObj(obj, src, clean) {
         if (!isObject(src)) return;
@@ -260,6 +260,8 @@ var extend = function (dest, srcs, clean) {
 };
 
 var type = function (v) {
+    if (v === null) return 'null';
+    if (v === undefined) return 'undefined';
     var t = Object.prototype.toString.call(v);
     return t.substring('[object '.length, t.length - 1).toLowerCase();
 };
@@ -327,7 +329,7 @@ var defaults = {
 /**
  * Parse text response into JSON
  * @param  {String} req             The response
- * @return {String|JSON}            A JSON Object of the responseText, plus the orginal response
+ * @return {String|JSON}            A JSON object or string
  */
 function parseResponse(req) {
     var result;
@@ -348,7 +350,7 @@ function parseResponse(req) {
  * @return {Object}             Chained success/error/always methods
  */
 function send(options) {
-    var settings = extend({}, defaults, options || {});
+    var settings = extend(clone(defaults), clone(options || {}));
     var id = gid();
 
     /* Then-do methods */
@@ -473,12 +475,27 @@ var defaults$1 = {
 };
 
 /**
+ * Parse text response into JSON
+ * @param  {String} req             The responseText
+ * @return {String|JSON}            A JSON object or string
+ */
+function parseResponseData(req) {
+    var result;
+    try {
+        result = JSON.parse(req);
+    } catch (e) {
+        result = req;
+    }
+    return result;
+}
+
+/**
  * Make an XDomainRequest (IE 8-9)
  * @param  {Object} options     Options
  * @return {Object}             Chained success/error/always methods
  */
 function send$1(options) {
-    options = extend({}, defaults$1, options || {});
+    options = extend(clone(defaults$1), clone(options || {}));
 
     /* Only if the request: uses GET or POST method, has HTTP or HTTPS protocol, has the same scheme as the calling page */
     if (!getOrPostRegEx.test(options.type) || !httpRegEx.test(options.url) || !sameSchemeRegEx.test(options.url)) {
@@ -542,7 +559,7 @@ function send$1(options) {
                 'Content-Type': request.contentType
             },
             text: request.responseText,
-            data: request.responseText
+            data: parseResponseData(request.responseText)
         };
 
         if (dataType === 'html' || /text\/html/i.test(request.contentType)) {

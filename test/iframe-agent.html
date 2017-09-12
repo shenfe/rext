@@ -14,7 +14,487 @@
     <body>
         <script type="text/javascript">
         var HostWhitelist = ["10.0.75.1"];
-        !function(){"use strict";function e(){try{return new window.XMLHttpRequest}catch(e){}}function n(){try{return new window.ActiveXObject("Microsoft.XMLHTTP")}catch(e){}}function t(e){var n;if("text"!==e.responseType&&""!==e.responseType)return e.response;try{n=JSON.parse(e.responseText)}catch(t){n=e.responseText}return n}function r(e){var n=v(b,e||{}),r=o(),i={success:e.success||arguments[1]||function(){},error:e.error||arguments[2]||function(){},always:e.always||arguments[3]||function(){}},a=T(),s=function(e,n){if(null!=s&&(4===a.readyState||n))if(delete m[r],s=undefined,a.onreadystatechange=null,n)4!==a.readyState&&a.abort();else{var o=t(a);a.status>=200&&a.status<300?i.success.call(i,o,a):i.error.call(i,o,a),i.always.call(i,o,a)}};a.open(n.type,n.url,!0),a.responseType=n.responseType;for(var u in n.headers)n.headers.hasOwnProperty(u)&&a.setRequestHeader(u,n.headers[u]);n.withCredentials&&(a.withCredentials=!0),a.send(/application\/json/i.test(n.headers["Content-type"])?JSON.stringify(n.data):E(n.data)),4===a.readyState?window.setTimeout(s):a.onreadystatechange=m[r]=s;var c={success:function(e){return i.success=e,c},error:function(e){return i.error=e,c},always:function(e){return i.always=e,c},abort:function(){s&&s(undefined,!0)}};return c}var o=function(){var e=0;return function(){return e++}}(),i=function(e){return"number"==typeof e},a=function(e){var n=parseInt(e);return!isNaN(n)&&(("number"==typeof e||"string"==typeof e)&&n==e)},s=function(e){return"string"==typeof e},u=function(e){return"function"==typeof e},c=function(e){return"[object Object]"===Object.prototype.toString.call(e)},f=function(e){return"[object Array]"===Object.prototype.toString.call(e)},d=function(e){return null==e||"boolean"==typeof e||"number"==typeof e||"string"==typeof e||"function"==typeof e},l=function(e){return"function"==typeof Node&&e instanceof Node},p=function(e){return e instanceof NamedNodeMap},h=function(e,n,t){if(c(e)){for(var r in e)if(e.hasOwnProperty(r)&&!1===(d=n(e[r],r)))break}else if(f(e))if(t)for(o=e.length-1;o>=0&&!1!==(d=n(e[o],o));o--);else for(var o=0,i=e.length;o<i&&!1!==(d=n(e[o],o));o++);else if(l(e)){var a=!1;switch(e.nodeType){case Node.ELEMENT_NODE:break;case Node.TEXT_NODE:case Node.COMMENT_NODE:case Node.PROCESSING_INSTRUCTION_NODE:case Node.DOCUMENT_NODE:case Node.DOCUMENT_TYPE_NODE:case Node.DOCUMENT_FRAGMENT_NODE:default:a=!0}if(a)return;for(var o=0,s=e.childNodes,i=e.childNodes.length;o<i;o++)n(s[o]),h(s[o],n)}else if(p(e))for(var o=0,i=e.length;o<i;o++){var d=n(e[o].nodeValue,e[o].nodeName);if(!1===d)break}else u(e.forEach)&&e.forEach(n)},y=function(e){var n=e;return c(e)?(n={},h(e,function(e,t){n[t]=y(e)})):f(e)&&(n=[],h(e,function(e){n.push(y(e))})),n},w=function(e,n){if(c(e))return e.hasOwnProperty(n);if(f(e)){var t=parseInt(n);return a(n)&&e.length>t&&t>=0}return!1},g=function(e,n,t){var r=s(n)||i(n),o=r?e[n]:e;(c(o)||f(o))&&(h(o,function(e,n){g(o,n)}),f(o)&&N(o)),r&&(e[n]=t)},N=function(e,n){if(i(n))for(h(e,function(t,r){if(!(r>=n))return!1;e.length--},!0);e.length<n;)e.push(null);else h(e,function(n,t){n===undefined&&e.length--},!0);return e},v=function(e,n,t){function r(e,n,t){c(n)&&(h(n,function(n,o){!w(e,o)||d(n)?e[o]!==n&&(e[o]=y(n)):r(e[o],n,t)}),t&&(h(e,function(t,r){w(n,r)||g(e,r)}),f(e)&&N(e)))}if(!c(e))return null;var o=Array.prototype.slice.call(arguments,1,!0===arguments[arguments.length-1]?arguments.length-1:arguments.length);return h(o,function(n){r(e,n,t)}),e},O=function(e){var n=Object.prototype.toString.call(e);return n.substring("[object ".length,n.length-1).toLowerCase()},E=function(e){if(null==e)return"";if("array"===O(e))return JSON.stringify(e);if(d(e))return String(e);var n=[];for(var t in e)e.hasOwnProperty(t)&&n.push(encodeURIComponent(t)+"="+encodeURIComponent(d(e[t])?String(e[t]):JSON.stringify(e[t])));return n.join("&")},T=window.ActiveXObject===undefined||window.document.documentMode>8?e:function(){return e()||n()},m={},b={type:"GET",url:null,data:{},headers:{"Content-type":"application/x-www-form-urlencoded","X-Requested-With":"XMLHttpRequest"},responseType:"text",withCredentials:!1};window.attachEvent&&window.attachEvent("onunload",function(){for(var e in m)m.hasOwnProperty(e)&&m[e](undefined,!0)});T();var S=window.location.protocol+"//"+window.location.host;!function(e,n,t){t=t||window,window.addEventListener?t.addEventListener(e,n,!1):t.attachEvent("on"+e,n)}("message",function(e){var n;try{n=JSON.parse(e.data)}catch(o){}if(n&&n.origin===S)switch(n.type){case"iframe-agent-request":if(null==n.id)return;var t={type:"iframe-agent-response",origin:S,id:n.id,message:"",data:null};r(n.data,function(){t.message="success",t.data=[].slice.call(arguments),window.parent.postMessage(JSON.stringify(t),"*")},function(){t.message="error",t.data=[].slice.call(arguments),window.parent.postMessage(JSON.stringify(t),"*")})}}),String.prototype.endsWith||(String.prototype.endsWith=function(e,n){return n<this.length?n|=0:n=this.length,this.substr(n-e.length,e.length)===e}),function(e,n){for(var t=function(e){var n=window.document.createElement("a");return n.href=e,n.hostname}(window.document.referrer),r=0,o=e.length;r<o;r++)if(t.endsWith(e[r])||"."+t===e[r])return!0;throw new Error("Host blocked!")}(HostWhitelist),function(){var e={type:"iframe-agent-ready",origin:S};window.parent.postMessage(JSON.stringify(e),"*")}()}();
+        (function () {
+'use strict';
+
+var gid = (function () {
+    var n = 0;
+    return function () {
+        return n++;
+    };
+})();
+
+var isNumber = function (v) {
+    return typeof v === 'number';
+};
+
+var isNumeric = function (v) {
+    var n = parseInt(v);
+    if (isNaN(n)) return false;
+    return (typeof v === 'number' || typeof v === 'string') && n == v;
+};
+
+var isString = function (v) {
+    return typeof v === 'string';
+};
+
+var isFunction = function (v) {
+    return typeof v === 'function';
+};
+
+var isObject = function (v) {
+    return v != null && Object.prototype.toString.call(v) === '[object Object]';
+};
+
+var isArray$1 = function (v) {
+    return Object.prototype.toString.call(v) === '[object Array]';
+};
+
+var isBasic = function (v) {
+    return v == null || typeof v === 'boolean' || typeof v === 'number' || typeof v === 'string' || typeof v === 'function';
+};
+
+var isNode = function (v) {
+    if (typeof Node !== 'function') return false;
+    return v instanceof Node;
+};
+
+var isNamedNodeMap = function (v) {
+    return v instanceof NamedNodeMap;
+};
+
+var each = function (v, func, arrayReverse) {
+    if (isObject(v)) {
+        for (var p in v) {
+            if (!v.hasOwnProperty(p)) continue;
+            var r = func(v[p], p);
+            if (r === false) break;
+        }
+    } else if (isArray$1(v)) {
+        if (!arrayReverse) {
+            for (var i = 0, len = v.length; i < len; i++) {
+                var r = func(v[i], i);
+                if (r === false) break;
+            }
+        } else {
+            for (var i = v.length - 1; i >= 0; i--) {
+                var r = func(v[i], i);
+                if (r === false) break;
+            }
+        }
+    } else if (isNode(v)) {
+        var ret = false;
+        switch (v.nodeType) {
+            case Node.ELEMENT_NODE:
+                break;
+            case Node.TEXT_NODE:
+            case Node.COMMENT_NODE:
+            case Node.PROCESSING_INSTRUCTION_NODE:
+            case Node.DOCUMENT_NODE:
+            case Node.DOCUMENT_TYPE_NODE:
+            case Node.DOCUMENT_FRAGMENT_NODE:
+            default:
+                ret = true;
+        }
+        if (ret) return;
+        for (var i = 0, childNodes = v.childNodes, len = v.childNodes.length; i < len; i++) {
+            func(childNodes[i]);
+            each(childNodes[i], func);
+        }
+    } else if (isNamedNodeMap(v)) {
+        for (var i = 0, len = v.length; i < len; i++) {
+            var r = func(v[i]['nodeValue'], v[i]['nodeName']);
+            if (r === false) break;
+        }
+    } else if (isFunction(v.forEach)) {
+        v.forEach(func);
+    }
+};
+
+var clone = function (val) {
+    var r = val;
+    if (isObject(val)) {
+        r = {};
+        each(val, function (v, p) {
+            r[p] = clone(v);
+        });
+    } else if (isArray$1(val)) {
+        r = [];
+        each(val, function (v) {
+            r.push(clone(v));
+        });
+    }
+    return r;
+};
+
+var hasProperty = function (val, p) {
+    if (isObject(val)) {
+        return val.hasOwnProperty(p);
+    } else if (isArray$1(val)) {
+        var n = parseInt(p);
+        return isNumeric(p) && val.length > n && n >= 0;
+    }
+    return false;
+};
+
+var clear = function (val, p, withBasicVal) {
+    var inRef = isString(p) || isNumber(p);
+    var target = inRef ? val[p] : val;
+
+    if (isObject(target) || isArray$1(target)) {
+        each(target, function (v, p) {
+            clear(target, p);
+        });
+        if (isArray$1(target)) {
+            shrinkArray(target);
+        }
+    }
+
+    if (inRef) {
+        val[p] = withBasicVal;
+    }
+};
+
+var shrinkArray = function (arr, len) {
+    var limited = isNumber(len);
+    if (!limited) {
+        each(arr, function (v, i) {
+            if (v === undefined) arr.length--;
+        }, true);
+    } else {
+        each(arr, function (v, i) {
+            if (i >= len) arr.length--;
+            else return false;
+        }, true);
+        while (arr.length < len) {
+            arr.push(null);
+        }
+    }
+    return arr;
+};
+
+var extend = function (dest, srcs, clean) {
+    if (!isObject(dest)) return null;
+    var args = Array.prototype.slice.call(arguments, 1,
+        arguments[arguments.length - 1] === true ? (arguments.length - 1) : arguments.length);
+    clean = arguments[arguments.length - 1] === true ? true : false;
+
+    function extendObj(obj, src, clean) {
+        if (!isObject(src)) return;
+        each(src, function (v, p) {
+            if (!hasProperty(obj, p) || isBasic(v)) {
+                if (obj[p] !== v) {
+                    obj[p] = clone(v);
+                }
+            } else {
+                extendObj(obj[p], v, clean);
+            }
+        });
+        if (clean) {
+            each(obj, function (v, p) {
+                if (!hasProperty(src, p)) {
+                    clear(obj, p);
+                }
+            });
+            if (isArray$1(obj)) {
+                shrinkArray(obj);
+            }
+        }
+    }
+
+    each(args, function (src) {
+        extendObj(dest, src, clean);
+    });
+    return dest;
+};
+
+var type = function (v) {
+    if (v === null) return 'null';
+    if (v === undefined) return 'undefined';
+    var t = Object.prototype.toString.call(v);
+    return t.substring('[object '.length, t.length - 1).toLowerCase();
+};
+
+var param = function (obj) {
+    if (obj == null) return '';
+    if (type(obj) === 'array') return JSON.stringify(obj);
+    if (isBasic(obj)) return String(obj);
+    var encoded = [];
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            encoded.push(encodeURIComponent(prop) + '=' + encodeURIComponent(isBasic(obj[prop]) ? String(obj[prop]) : JSON.stringify(obj[prop])));
+        }
+    }
+    return encoded.join('&');
+};
+
+function createStandardXHR() {
+    try {
+        return new window.XMLHttpRequest();
+    } catch (e) {}
+}
+
+function createActiveXHR() {
+    try {
+        return new window.ActiveXObject('Microsoft.XMLHTTP');
+    } catch (e) {}
+}
+
+var createXHR = (window.ActiveXObject === undefined || window.document.documentMode > 8)
+    ? createStandardXHR
+    : function () {
+        return createStandardXHR() || createActiveXHR();
+    };
+
+var xhrCallbacks = {};
+
+/* Default settings */
+var defaults = {
+    type: 'GET',
+    url: null,
+    data: {},
+    headers: {
+        'Content-type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+    },
+    responseType: 'text',
+    withCredentials: false
+};
+
+/**
+ * Parse text response into JSON
+ * @param  {String} req             The response
+ * @return {String|JSON}            A JSON object or string
+ */
+function parseResponse(req) {
+    var result;
+    if (req.responseType !== 'text' && req.responseType !== '') {
+        return req.response;
+    }
+    try {
+        result = JSON.parse(req.responseText);
+    } catch (e) {
+        result = req.responseText;
+    }
+    return result;
+}
+
+/**
+ * Make an XML HTTP request
+ * @param  {Object} options     Options
+ * @return {Object}             Chained success/error/always methods
+ */
+function send(options) {
+    var settings = extend({}, defaults, options || {});
+    var id = gid();
+
+    /* Then-do methods */
+    var thenDo = {
+        success: options.success || arguments[1] || function () {},
+        error: options.error || arguments[2] || function () {},
+        always: options.always || arguments[3] || function () {}
+    };
+
+    /* Create an HTTP request */
+    var request = createXHR();
+
+    /* Setup our listener to process completed requests */
+    var xhrCallback = function (_, toAbort) {
+        /* Only run if the request is complete */
+        if (xhrCallback == null || (request.readyState !== 4 && !toAbort)) return;
+
+        /* Clean up */
+        delete xhrCallbacks[id];
+        xhrCallback = undefined;
+        request.onreadystatechange = null;
+
+        /* Abort manually if needed */
+        if (toAbort) {
+            if (request.readyState !== 4) {
+                request.abort();
+            }
+            return;
+        }
+
+        /* Parse the response data */
+        var responseData = parseResponse(request);
+
+        /* Process the response */
+        if (request.status >= 200 && request.status < 300) {
+            thenDo.success.call(thenDo, responseData, request);
+        } else {
+            thenDo.error.call(thenDo, responseData, request);
+        }
+
+        thenDo.always.call(thenDo, responseData, request);
+    };
+
+    /* Setup the request */
+    request.open(settings.type, settings.url, true);
+    request.responseType = settings.responseType;
+
+    /* Set headers */
+    for (var header in settings.headers) {
+        if (settings.headers.hasOwnProperty(header)) {
+            request.setRequestHeader(header, settings.headers[header]);
+        }
+    }
+
+    /* Set `withCredentials` */
+    if (settings.withCredentials) {
+        request.withCredentials = true;
+    }
+
+    /* Send the request */
+    request.send(/application\/json/i.test(settings.headers['Content-type'])
+        ? JSON.stringify(settings.data)
+        : param(settings.data)
+    );
+
+    if (request.readyState === 4) {
+        window.setTimeout(xhrCallback);
+    } else {
+        request.onreadystatechange = xhrCallbacks[id] = xhrCallback;
+    }
+
+    /* Override defaults with user methods and setup chaining */
+    var _this = {
+        success: function (callback) {
+            thenDo.success = callback;
+            return _this;
+        },
+        error: function (callback) {
+            thenDo.error = callback;
+            return _this;
+        },
+        always: function (callback) {
+            thenDo.always = callback;
+            return _this;
+        },
+        abort: function () {
+            if (xhrCallback) {
+                xhrCallback(undefined, true);
+            }
+        }
+    };
+
+    return _this;
+}
+
+/**
+ * IE 9-: Open requests must be manually aborted on unload (#5280)
+ * @refer https://support.microsoft.com/kb/2856746
+ */
+if (window.attachEvent) {
+    window.attachEvent('onunload', function () {
+        for (var id in xhrCallbacks) {
+            xhrCallbacks.hasOwnProperty(id) && xhrCallbacks[id](undefined, true);
+        }
+    });
+}
+
+var xhrInstance = createXHR();
+
+var localOrigin = window.location.protocol + '//' + window.location.host;
+
+/**
+ * Add event listener.
+ * @param  {String} event           The event name
+ * @param  {Function} handler       The event handler
+ * @param  {Node|Undefined} target  The target element
+ * @return {[type]}                 [description]
+ */
+function listenEvent(event, handler, target) {
+    target = target || window;
+    if (window.addEventListener) {
+        target.addEventListener(event, handler, false);
+    } else {
+        target.attachEvent('on' + event, handler);
+    }
+}
+
+/**
+ * Message event handler.
+ * @param  {[type]} e [description]
+ * @return {[type]}   [description]
+ */
+function messageEventHandler(e) {
+    var msg;
+    try {
+        msg = JSON.parse(e.data);
+    } catch (ex) {}
+    if (!msg || msg.origin !== localOrigin) return;
+
+    switch (msg.type) {
+        case 'iframe-agent-request':
+            if (msg.id == null) return;
+            var res = {
+                type: 'iframe-agent-response',
+                origin: localOrigin,
+                id: msg.id,
+                message: '',
+                data: null
+            };
+            send(msg.data, function () {
+                res.message = 'success';
+                res.data = [].slice.call(arguments);
+                window.parent.postMessage(JSON.stringify(res), '*');
+            }, function () {
+                res.message = 'error';
+                res.data = [].slice.call(arguments);
+                window.parent.postMessage(JSON.stringify(res), '*');
+            });
+            break;
+    }
+}
+
+listenEvent('message', messageEventHandler);
+
+if (!String.prototype.endsWith) {
+    String.prototype.endsWith = function (searchStr, Position) {
+        if (!(Position < this.length))
+            Position = this.length;
+        else
+            Position |= 0;
+        return this.substr(Position - searchStr.length, searchStr.length) === searchStr;
+    };
+}
+
+function inArray(item, arr) {
+    for (var i = 0, len = arr.length; i < len; i++) {
+        if (item === arr[i]) return i;
+    }
+    return -1;
+}
+
+(function (whitelist, strictMatch) {
+    function parseDomain(url) {
+        var aTag = window.document.createElement('a');
+        aTag.href = url;
+        return aTag.hostname;
+    }
+    var parentHost = parseDomain(window.document.referrer);
+    if (strictMatch) {
+        if (inArray(parentHost, whitelist) < 0) {
+            throw new Error('Host blocked!');
+        }
+    } else {
+        for (var i = 0, len = whitelist.length; i < len; i++) {
+            if (parentHost.endsWith(whitelist[i]) || ('.' + parentHost) === whitelist[i]) return true;
+        }
+        throw new Error('Host blocked!');
+    }
+})(HostWhitelist);
+
+(function () {
+    var msg = {
+        type: 'iframe-agent-ready',
+        origin: localOrigin
+    };
+    window.parent.postMessage(JSON.stringify(msg), '*');
+})();
+
+}());
 
         </script>
     </body>

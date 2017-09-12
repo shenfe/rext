@@ -8,11 +8,11 @@ module.exports = {
         name: 'iframeAgent'
     },
     plugins: [
-        uglify({
-            mangle: {
-                reserved: ['HostWhitelist'],
-            },
-            ie8: true
-        })
+        // uglify({
+        //     mangle: {
+        //         reserved: ['HostWhitelist'],
+        //     },
+        //     ie8: true
+        // })
     ]
 };
