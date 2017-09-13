@@ -58,7 +58,7 @@ function parseResponse(req) {
  */
 function send(options) {
     var settings = Util.extend({}, defaults, options || {});
-    var id = Util.gid();
+    var id = Util.uid();
 
     /* Then-do methods */
     var thenDo = {

@@ -1,3 +1,5 @@
+import * as Util from './util.js'
+
 /**
  * Parse the origin from a url string.
  * @param  {String} url [description]
@@ -57,25 +59,13 @@ var agentStatusTable = {};
 var waitingRequestTable = {};
 
 /**
- * Generate an id number.
- * @return {Number} A unique id.
- */
-var idGen = (function () {
-    var id = 0;
-    return function () {
-        id++;
-        return id;
-    };
-})();
-
-/**
  * Get the id of an origin.
  * @param  {String} origin The origin string
  * @return {Number}        The origin id
  */
 function getOriginId(origin) {
     if (originIdTable[origin] === undefined) {
-        originIdTable[origin] = idGen();
+        originIdTable[origin] = Util.gid();
     }
     return originIdTable[origin];
 }
@@ -203,7 +193,7 @@ function send(options) {
         error: options.error || arguments[2] || function () {},
         always: options.always || arguments[3] || function () {}
     };
-    var id = idGen();
+    var id = Util.gid();
 
     if (!callbackTable[targetOrigin]) callbackTable[targetOrigin] = {};
     callbackTable[targetOrigin][id] = thenDo;

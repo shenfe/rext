@@ -1,4 +1,8 @@
-var gid = (function () {
+var gid = function () {
+    return new Date().getTime() * 10000 + Math.floor(Math.random() * 10000);
+};
+
+var uid = (function () {
     var n = 0;
     return function () {
         return n++;
@@ -251,6 +255,7 @@ function isCrossDomain(url) {
 
 export {
     gid,
+    uid,
     isBoolean,
     isNumber,
     isNumeric,

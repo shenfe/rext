@@ -68,7 +68,11 @@ if (!Array.prototype.forEach) {
     };
 }
 
-var gid = (function () {
+var gid = function () {
+    return new Date().getTime() * 10000 + Math.floor(Math.random() * 10000);
+};
+
+var uid = (function () {
     var n = 0;
     return function () {
         return n++;
@@ -318,7 +322,7 @@ function parseResponse(req) {
  */
 function send(options) {
     var settings = extend({}, defaults, options || {});
-    var id = gid();
+    var id = uid();
 
     /* Then-do methods */
     var thenDo = {
@@ -694,25 +698,13 @@ var agentStatusTable = {};
 var waitingRequestTable = {};
 
 /**
- * Generate an id number.
- * @return {Number} A unique id.
- */
-var idGen = (function () {
-    var id = 0;
-    return function () {
-        id++;
-        return id;
-    };
-})();
-
-/**
  * Get the id of an origin.
  * @param  {String} origin The origin string
  * @return {Number}        The origin id
  */
 function getOriginId(origin) {
     if (originIdTable[origin] === undefined) {
-        originIdTable[origin] = idGen();
+        originIdTable[origin] = gid();
     }
     return originIdTable[origin];
 }
@@ -840,7 +832,7 @@ function send$3(options) {
         error: options.error || arguments[2] || function () {},
         always: options.always || arguments[3] || function () {}
     };
-    var id = idGen();
+    var id = gid();
 
     if (!callbackTable[targetOrigin]) callbackTable[targetOrigin] = {};
     callbackTable[targetOrigin][id] = thenDo;
