@@ -7,7 +7,7 @@
 		- [a Wrapped Promise Object](#a-wrapped-promise-object)
 	- [Options](#options)
 	- [Case Matrix](#case-matrix)
-	- [Take a Look at headers['Content-Type']](#take-a-look-at-headers['content-type'])
+	- [Take a Look at headers['Content-Type']](#take-a-look-at-headerscontent-type)
 	- [Take a Look at responseType](#take-a-look-at-responsetype)
 	- [License](#license)
 
