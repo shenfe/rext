@@ -121,7 +121,7 @@ Instructions of the option object:
 | `agent` | Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
 | `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. See below for more. |
 | `headers` | The request headers object. Usually define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
-| `contentType` | The same as `header['Content-Type']`. |
+| `contentType` | The same as `headers['Content-Type']`. |
 | `jsonp` | undefined (default), true. If `responseType` (or `dataType`) is set `jsonp`, this would be true as well. |
 | `promise` | undefined (default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
 
