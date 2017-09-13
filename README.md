@@ -52,9 +52,9 @@ rext({
     data: { /**/ }
 }).success((data, response) => {
     /**/
-}).error((data, response) =>{
+}).error((data, response) => {
     /**/
-}).always((data, response) =>{
+}).always((data, response) => {
     /**/
 });
 ```
@@ -99,7 +99,7 @@ All the cases of requests.
 | yes | - | IE 10-11, non-IE | XMLHttpRequest (Level 2) | Server responses should include the `Access-Control-Allow-Origin` HTTP response header with value `*`, or the exact origin of the calling page. | - |
 | yes | yes | IE 10-11, non-IE | XMLHttpRequest (Level 2) | Server responses should include the `Access-Control-Allow-Origin` HTTP response header with the exact origin of the calling page, and the `Access-Control-Allow-Credentials` HTTP response header with value `true`. | - |
 | - | - | - | JSONP | - | [Security concerns](https://en.wikipedia.org/wiki/JSONP#Security_concerns) |
-| - | - | - | iframe agent | - | Be put in a specific place of the target origin. A whitelist of visitor origins is required. |
+| - | - | - | iframe agent | Be put in a specific place of the target origin. | A whitelist of visitor origins is required. |
 
 ## `headers['Content-Type']`
 
