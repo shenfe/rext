@@ -1,4 +1,5 @@
 import * as Util from './util.js'
+import * as Helper from './helper.js'
 
 var httpRegEx = /^(https?:)?\/\//i;
 var getOrPostRegEx = /^get|post$/i;
@@ -53,25 +54,6 @@ function send(options) {
         success: options.success || function () {},
         error: options.error || function () {},
         always: options.always || function () {}
-    };
-
-    /* Override defaults with user methods and setup chaining */
-    var _this = {
-        success: function (callback) {
-            thenDo.success = callback;
-            return _this;
-        },
-        error: function (callback) {
-            thenDo.error = callback;
-            return _this;
-        },
-        always: function (callback) {
-            thenDo.always = callback;
-            return _this;
-        },
-        abort: function () {
-            request.abort();
-        }
     };
 
     request.ontimeout = function () {
@@ -156,12 +138,21 @@ function send(options) {
         request.send(isntGet ? paramData : '');
     }, 0);
 
-    return _this;
+    return {
+        success: Util.funcontinue(thenDo, 'success'),
+        error: Util.funcontinue(thenDo, 'error'),
+        always: Util.funcontinue(thenDo, 'always'),
+        abort: function () {
+            request.abort();
+        }
+    };
 }
+
+var promiseSend = Helper.promiseWrap(send);
 
 var supported = !!window.XDomainRequest;
 
 export {
     supported,
-    send
+    promiseSend
 }

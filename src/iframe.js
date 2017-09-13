@@ -1,4 +1,5 @@
 import * as Util from './util.js'
+import * as Helper from './helper.js'
 
 /**
  * Parse the origin from a url string.
@@ -201,25 +202,15 @@ function send(options) {
     var iframe = getIframe(targetOrigin);
     doOnReady(targetOrigin, iframe, id, options);
 
-    /* Setup chaining */
-    var _this = {
-        success: function (callback) {
-            thenDo.success = callback;
-            return _this;
-        },
-        error: function (callback) {
-            thenDo.error = callback;
-            return _this;
-        },
-        always: function (callback) {
-            thenDo.always = callback;
-            return _this;
-        }
+    return {
+        success: Util.funcontinue(thenDo, 'success'),
+        error: Util.funcontinue(thenDo, 'error'),
+        always: Util.funcontinue(thenDo, 'always')
     };
-
-    return _this;
 }
 
+var promiseSend = Helper.promiseWrap(send);
+
 export {
-    send
+    promiseSend
 }

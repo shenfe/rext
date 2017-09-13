@@ -8,6 +8,10 @@ import * as IframeAgent from './iframe.js'
 function rext(options) {
     var args = [].slice.call(arguments);
 
+    if (options.promise && typeof options.promise !== 'function') {
+        options.promise = rext.defaults.promise;
+    }
+
     var isJsonp = !!options.jsonp || options.dataType === 'jsonp' || options.responseType === 'jsonp';
     if (isJsonp) {
         return jsonp.apply(null, args);
@@ -48,12 +52,22 @@ function rext(options) {
     var forceIframe = !!options.agent;
 
     if (!isCrossDomain || XHR.corsSupported) {
-        return XHR.send.apply(null, args);
+        return XHR.promiseSend.apply(null, args);
+
+    /* If you want to disable XDomainRequest, comment the two lines below and build your version. */
     } else if (!forceIframe && XDR.supported && !isWithCredentials && !isntGet && !(/\/json/i.test(options.headers['Content-Type']))) {
-        return XDR.send.apply(null, args);
+        return XDR.promiseSend.apply(null, args);
+    /* If you want to disable XDomainRequest, comment the two lines above and build your version. */
+
     } else {
-        return IframeAgent.send.apply(null, args);
+        return IframeAgent.promiseSend.apply(null, args);
     }
+}
+
+rext.defaults = {};
+
+if (typeof Promise === 'function') {
+    rext.defaults.promise = Promise;
 }
 
 export default rext

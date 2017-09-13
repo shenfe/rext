@@ -1,4 +1,5 @@
 import * as Util from './util.js'
+import * as Helper from './helper.js'
 
 /**
  * Make a JSONP request
@@ -8,7 +9,7 @@ import * as Util from './util.js'
  */
 function send(options, callback) {
     var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
-    window[callbackGlobalName] = callback || options.callback;
+    window[callbackGlobalName] = callback || options.callback || options.complete;
 
     /* Create and insert */
     var ref = window.document.getElementsByTagName('script')[0];
@@ -30,11 +31,14 @@ function send(options, callback) {
         }
     };
 
-    if (window[callbackGlobalName] == null) {
-        return function (fn) {
-            window[callbackGlobalName] = fn;
-        };
-    }
+    var resolver = Util.funcontinue(window, callbackGlobalName);
+    return {
+        success: resolver,
+        complete: resolver,
+        error: function () {}
+    };
 }
 
-export default send
+var promiseSend = Helper.promiseWrap(send);
+
+export default promiseSend

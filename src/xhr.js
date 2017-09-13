@@ -1,4 +1,5 @@
 import * as Util from './util.js'
+import * as Helper from './helper.js'
 
 function createStandardXHR() {
     try {
@@ -137,29 +138,19 @@ function send(options) {
         request.onreadystatechange = xhrCallbacks[id] = xhrCallback;
     }
 
-    /* Override defaults with user methods and setup chaining */
-    var _this = {
-        success: function (callback) {
-            thenDo.success = callback;
-            return _this;
-        },
-        error: function (callback) {
-            thenDo.error = callback;
-            return _this;
-        },
-        always: function (callback) {
-            thenDo.always = callback;
-            return _this;
-        },
+    return {
+        success: Util.funcontinue(thenDo, 'success'),
+        error: Util.funcontinue(thenDo, 'error'),
+        always: Util.funcontinue(thenDo, 'always'),
         abort: function () {
             if (xhrCallback) {
                 xhrCallback(undefined, true);
             }
         }
     };
-
-    return _this;
 }
+
+var promiseSend = Helper.promiseWrap(send);
 
 /**
  * IE 9-: Open requests must be manually aborted on unload (#5280)
@@ -180,5 +171,5 @@ var corsSupported = supported && ('withCredentials' in xhrInstance);
 export {
     supported,
     corsSupported,
-    send
+    promiseSend
 }

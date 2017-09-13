@@ -253,6 +253,18 @@ function isCrossDomain(url) {
     );
 }
 
+function funcontinue(target, prop) {
+    return function (fn) {
+        var oldFn = target[prop];
+        target[prop] = function () {
+            var args = [].slice.call(arguments);
+            oldFn && oldFn.apply(this, args);
+            fn && fn.apply(this, args);
+        };
+        return this;
+    };
+}
+
 export {
     gid,
     uid,
@@ -281,5 +293,6 @@ export {
     extend,
     type,
     param,
-    isCrossDomain
+    isCrossDomain,
+    funcontinue
 }

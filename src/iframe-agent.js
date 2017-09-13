@@ -40,7 +40,7 @@ function messageEventHandler(e) {
                 message: '',
                 data: null
             };
-            XHR.send(msg.data, function () {
+            XHR.promiseSend(msg.data, function () {
                 res.message = 'success';
                 res.data = [].slice.call(arguments);
                 window.parent.postMessage(JSON.stringify(res), '*');

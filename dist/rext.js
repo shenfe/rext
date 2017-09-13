@@ -264,6 +264,53 @@ function isCrossDomain(url) {
     );
 }
 
+function funcontinue(target, prop) {
+    return function (fn) {
+        var oldFn = target[prop];
+        target[prop] = function () {
+            var args = [].slice.call(arguments);
+            oldFn && oldFn.apply(this, args);
+            fn && fn.apply(this, args);
+        };
+        return this;
+    };
+}
+
+function PromiseDecor(Prom, executor) {
+    this.promise = new Prom(executor);
+}
+PromiseDecor.prototype.success =
+    PromiseDecor.prototype.always =
+    PromiseDecor.prototype.complete =
+    PromiseDecor.prototype.then = function () {
+        var args = [].slice.call(arguments);
+        this.promise = this.promise.then.apply(this.promise, args);
+        return this;
+    };
+PromiseDecor.prototype.error =
+    PromiseDecor.prototype['catch'] = function () {
+        var args = [].slice.call(arguments);
+        this.promise = this.promise['catch'].apply(this.promise, args);
+        return this;
+    };
+
+function promiseWrap(send) {
+    return function promiseWrap(options) {
+        var args = [].slice.call(arguments);
+        var ret = send.apply(null, args);
+        if (!options.promise) return ret;
+
+        return new PromiseDecor(options.promise, function (resolve, reject) {
+            ret.success(function (data) {
+                resolve(data);
+            });
+            ret.error(function (data) {
+                reject(data);
+            });
+        });
+    };
+}
+
 function createStandardXHR() {
     try {
         return new window.XMLHttpRequest();
@@ -401,29 +448,19 @@ function send(options) {
         request.onreadystatechange = xhrCallbacks[id] = xhrCallback;
     }
 
-    /* Override defaults with user methods and setup chaining */
-    var _this = {
-        success: function (callback) {
-            thenDo.success = callback;
-            return _this;
-        },
-        error: function (callback) {
-            thenDo.error = callback;
-            return _this;
-        },
-        always: function (callback) {
-            thenDo.always = callback;
-            return _this;
-        },
+    return {
+        success: funcontinue(thenDo, 'success'),
+        error: funcontinue(thenDo, 'error'),
+        always: funcontinue(thenDo, 'always'),
         abort: function () {
             if (xhrCallback) {
                 xhrCallback(undefined, true);
             }
         }
     };
-
-    return _this;
 }
+
+var promiseSend = promiseWrap(send);
 
 /**
  * IE 9-: Open requests must be manually aborted on unload (#5280)
@@ -494,25 +531,6 @@ function send$1(options) {
         success: options.success || function () {},
         error: options.error || function () {},
         always: options.always || function () {}
-    };
-
-    /* Override defaults with user methods and setup chaining */
-    var _this = {
-        success: function (callback) {
-            thenDo.success = callback;
-            return _this;
-        },
-        error: function (callback) {
-            thenDo.error = callback;
-            return _this;
-        },
-        always: function (callback) {
-            thenDo.always = callback;
-            return _this;
-        },
-        abort: function () {
-            request.abort();
-        }
     };
 
     request.ontimeout = function () {
@@ -597,8 +615,17 @@ function send$1(options) {
         request.send(isntGet ? paramData : '');
     }, 0);
 
-    return _this;
+    return {
+        success: funcontinue(thenDo, 'success'),
+        error: funcontinue(thenDo, 'error'),
+        always: funcontinue(thenDo, 'always'),
+        abort: function () {
+            request.abort();
+        }
+    };
 }
+
+var promiseSend$1 = promiseWrap(send$1);
 
 var supported$1 = !!window.XDomainRequest;
 
@@ -610,7 +637,7 @@ var supported$1 = !!window.XDomainRequest;
  */
 function send$2(options, callback) {
     var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
-    window[callbackGlobalName] = callback || options.callback;
+    window[callbackGlobalName] = callback || options.callback || options.complete;
 
     /* Create and insert */
     var ref = window.document.getElementsByTagName('script')[0];
@@ -632,12 +659,15 @@ function send$2(options, callback) {
         }
     };
 
-    if (window[callbackGlobalName] == null) {
-        return function (fn) {
-            window[callbackGlobalName] = fn;
-        };
-    }
+    var resolver = funcontinue(window, callbackGlobalName);
+    return {
+        success: resolver,
+        complete: resolver,
+        error: function () {}
+    };
 }
+
+var promiseSend$2 = promiseWrap(send$2);
 
 /**
  * Parse the origin from a url string.
@@ -840,31 +870,25 @@ function send$3(options) {
     var iframe = getIframe(targetOrigin);
     doOnReady(targetOrigin, iframe, id, options);
 
-    /* Setup chaining */
-    var _this = {
-        success: function (callback) {
-            thenDo.success = callback;
-            return _this;
-        },
-        error: function (callback) {
-            thenDo.error = callback;
-            return _this;
-        },
-        always: function (callback) {
-            thenDo.always = callback;
-            return _this;
-        }
+    return {
+        success: funcontinue(thenDo, 'success'),
+        error: funcontinue(thenDo, 'error'),
+        always: funcontinue(thenDo, 'always')
     };
-
-    return _this;
 }
+
+var promiseSend$3 = promiseWrap(send$3);
 
 function rext(options) {
     var args = [].slice.call(arguments);
 
+    if (options.promise && typeof options.promise !== 'function') {
+        options.promise = rext.defaults.promise;
+    }
+
     var isJsonp = !!options.jsonp || options.dataType === 'jsonp' || options.responseType === 'jsonp';
     if (isJsonp) {
-        return send$2.apply(null, args);
+        return promiseSend$2.apply(null, args);
     }
 
     var isCrossDomain$$1 = isCrossDomain(options.url);
@@ -902,12 +926,22 @@ function rext(options) {
     var forceIframe = !!options.agent;
 
     if (!isCrossDomain$$1 || corsSupported) {
-        return send.apply(null, args);
+        return promiseSend.apply(null, args);
+
+    /* If you want to disable XDomainRequest, comment the two lines below and build your version. */
     } else if (!forceIframe && supported$1 && !isWithCredentials && !isntGet && !(/\/json/i.test(options.headers['Content-Type']))) {
-        return send$1.apply(null, args);
+        return promiseSend$1.apply(null, args);
+    /* If you want to disable XDomainRequest, comment the two lines above and build your version. */
+
     } else {
-        return send$3.apply(null, args);
+        return promiseSend$3.apply(null, args);
     }
+}
+
+rext.defaults = {};
+
+if (typeof Promise === 'function') {
+    rext.defaults.promise = Promise;
 }
 
 return rext;
