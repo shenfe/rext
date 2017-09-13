@@ -1,3 +1,16 @@
+- [rext](#)
+	- [Quick import](#)
+	- [IE 9- Support](#)
+	- [API](#)
+		- [XMLHttpRequest](#)
+		- [JSONP](#)
+		- [a Wrapped Promise Object](#)
+	- [Options](#)
+	- [Case Matrix](#)
+	- [Take a Look at headers['Content-Type']](#)
+	- [Take a Look at responseType](#)
+	- [License](#)
+
 # rext
 A light-weight (< 10kb minified) request library, for all browsers.
 
