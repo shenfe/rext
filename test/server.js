@@ -16,6 +16,10 @@ fs.writeFileSync(path.resolve(process.cwd(), './test/iframe-agent.html'),
         .replace('/* Define a whitelist of host names here, e.g. \'.invoker.com\'. */', `"${ipAddr}"`)
 );
 
+fs.writeFileSync(path.resolve(process.cwd(), './test/rext.min.js'),
+    fs.readFileSync(path.resolve(process.cwd(), './dist/rext.min.js'), 'utf8')
+);
+
 const bodyParser = require('body-parser');
 
 (function () {
