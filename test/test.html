@@ -17,8 +17,6 @@
             function output(data, req) {
                 console.log('data', data);
                 console.log('req', req);
-                var $output = document.getElementById('output');
-                $output.innerHTML = JSON.stringify(data, null, 4);
             }
             (function get1() {
                 var prom = rext({
