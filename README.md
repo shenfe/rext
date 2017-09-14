@@ -171,4 +171,4 @@ The alias of the expected MIME type of data to **receive**, similar to the `data
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2016-present, [shenfe](https://github.com/shenfe)
+Copyright (c) 2017-present, [shenfe](https://github.com/shenfe)
