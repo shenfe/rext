@@ -1,7 +1,20 @@
-# rext
-A light-weight (< 10kb minified) request library, for all browsers.
+- [rext](#)
+	- [Quick Import](#quick-import)
+	- [IE 9- Support](#ie-9--support)
+	- [API](#api)
+		- [XMLHttpRequest](#xmlhttprequest)
+		- [JSONP](#jsonp)
+		- [a Wrapped Promise Object](#a-wrapped-promise-object)
+	- [Options](#options)
+	- [Case Matrix](#case-matrix)
+	- [Take a Look at headers['Content-Type']](#take-a-look-at-headerscontent-type)
+	- [Take a Look at responseType](#take-a-look-at-responsetype)
+	- [License](#license)
 
-## Quick import
+# rext
+A light-weight (< 10kb minified) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
+
+## Quick Import
 
 Use `rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
 
@@ -46,6 +59,8 @@ Besides, the format of jQuery ajax's option object is also allowed:
 
 ### XMLHttpRequest
 
+The `success`, `error`, `always` callbacks are allowed both a chain call and defined in the option object.
+
 ```js
 rext({
     url: '/path/to/resource',
@@ -61,6 +76,8 @@ rext({
 
 ### JSONP
 
+The callback function is allowed either as the second parameter behind the option object or defined in the option object.
+
 ```js
 rext({
     jsonp: true,
@@ -71,7 +88,27 @@ rext({
 });
 ```
 
-### Options
+### a Wrapped Promise Object
+
+The Promise object is fine. It is wrapped in an object which has a `promise` property.
+
+To enable the Promise object, just include a `promise` property with value `true` in the option object. 
+
+```js
+var promise = rext({
+    promise: true,
+    url: '/path/to/resource',
+    data: { /**/ }
+}).then(data => {
+    /**/
+}).catch(data => {
+    /**/
+}).promise;
+```
+
+Now each method (`then` or `success`, `catch` or `error`) will return an object with a property `promise` whose value is the actual Promise object.
+
+## Options
 
 Instructions of the option object:
 
@@ -84,11 +121,12 @@ Instructions of the option object:
 | `agent` | Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
 | `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. See below for more. |
 | `headers` | The request headers object. Usually define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
-| `contentType` | The same as `header['Content-Type']`. |
+| `contentType` | The same as `headers['Content-Type']`. |
 | `jsonp` | undefined (default), true. If `responseType` (or `dataType`) is set `jsonp`, this would be true as well. |
+| `promise` | undefined (default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
 
-## Matrix
-All the cases of requests.
+## Case Matrix
+All the cases of browser requests.
 
 | Cross-Domain | With-Credentials | Web Browser | Approach | Restriction | Security |
 | :---: | :---: | :---: | :---: | :--- | :--- |
@@ -101,7 +139,7 @@ All the cases of requests.
 | - | - | - | JSONP | - | [Security concerns](https://en.wikipedia.org/wiki/JSONP#Security_concerns) |
 | - | - | - | iframe agent | Be put in a specific place of the target origin. | A whitelist of visitor origins is required. |
 
-## `headers['Content-Type']`
+## Take a Look at `headers['Content-Type']`
 
 The MIME type of data to **send**, like the `contentType` in jQuery ajax.
 
@@ -112,7 +150,7 @@ The MIME type of data to **send**, like the `contentType` in jQuery ajax.
 | `text/plain` | [HTML 5 specification](https://www.w3.org/TR/html5/forms.html#text/plain-encoding-algorithm). Not recommended. Do not use it unless for debugging. |
 | `application/json` | **Personally** not recommended for common POST requests. Make sure you really need to post complex data with user credentials. Additionally, for CORS requests, setting the content type to anything other than `application/x-www-form-urlencoded`, `multipart/form-data`, or `text/plain` will trigger the browser to send a preflight OPTIONS request to the server. |
 
-## `responseType`
+## Take a Look at `responseType`
 
 The alias of the expected MIME type of data to **receive**, similar to the `dataType` in jQuery ajax. This option affects the request header `Accept`, relating the response header `Content-Type`. However, **a simple trial of JSON parsing** would be conducted then regardless of the type of response data...
 
@@ -122,3 +160,7 @@ The alias of the expected MIME type of data to **receive**, similar to the `data
 | json | - |
 | xml | Seldom. |
 | html | Seldom. |
+
+## License
+
+MIT
