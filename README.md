@@ -14,6 +14,10 @@
 # rext
 A light-weight (< 10kb minified) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
+[![Sauce Test Status](https://saucelabs.com/buildstatus/hengwu)](https://saucelabs.com/u/hengwu)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/hengwu.svg)](https://saucelabs.com/u/hengwu)
+
 ## Quick Import
 
 Use `rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
