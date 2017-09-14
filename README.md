@@ -14,9 +14,11 @@
 # rext
 A light-weight (< 10kb minified) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
-[![Sauce Test Status](https://saucelabs.com/buildstatus/hengwu)](https://saucelabs.com/u/hengwu)
+Chrome | Firefox | IE | Safari
+| :---: | :---: | :---: | :---: |
+All ✔ | All ✔ | 6+ ✔ | All ✔
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/hengwu.svg)](https://saucelabs.com/u/hengwu)
+See [demo](http://45.77.36.84:4010/test-localhost.html)
 
 ## Quick Import
 
