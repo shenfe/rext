@@ -14,6 +14,7 @@
     <body>
         <script src="rext.min.js" charset="utf-8"></script>
         <script type="text/javascript">
+        window.onload = function () {
             function output(data, req) {
                 console.log('data', data);
                 console.log('req', req);
@@ -98,6 +99,7 @@
                     withCredentials: true
                 }).success(output).error(output);
             })();
+        };
         </script>
     </body>
 </html>
