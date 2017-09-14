@@ -18,8 +18,6 @@ Chrome | Firefox | IE | Safari
 | :---: | :---: | :---: | :---: |
 All ✔ | All ✔ | 6+ ✔ | All ✔
 
-See [demo](http://45.77.36.84:4010/test-localhost.html)
-
 ## Quick Import
 
 Use `rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
