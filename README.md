@@ -1,5 +1,5 @@
 - [rext](#)
-	- [Quick import](#quick-import)
+	- [Quick Import](#quick-import)
 	- [IE 9- Support](#ie-9--support)
 	- [API](#api)
 		- [XMLHttpRequest](#xmlhttprequest)
@@ -12,9 +12,9 @@
 	- [License](#license)
 
 # rext
-A light-weight (< 10kb minified) request library, for all browsers.
+A light-weight (< 10kb minified) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
-## Quick import
+## Quick Import
 
 Use `rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
 
