@@ -15,9 +15,9 @@
 
 A light-weight (< 10kb minified) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
-Chrome | Firefox | IE | Safari
+| <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png" alt="IE / Edge" width="16px" height="16px" /> IE / Edge | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" /> Firefox | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" /> Safari |
 | :---: | :---: | :---: | :---: |
-All ✔ | All ✔ | 6+ ✔ | All ✔
+| 6+ ✔ | All ✔ | All ✔ | All ✔ |
 
 ## Quick Import
 
@@ -122,13 +122,13 @@ Instructions of the option object:
 | `type` | `{Undefined\|String}` | 'get' (default), 'post'. |
 | `url` | `{String}` | The resource url string. |
 | `data` | `{Undefined\|Object}` | The data to send. Object recommended. |
-| `withCredentials` | `{Undefined\|Boolean}` | false (default), true. The `withCredentials` property of the request. Whether to send user credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is accepted as well. |
-| `agent` | `{Undefined\|Boolean}` | Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
+| `withCredentials` | `{Undefined\|Boolean}` | undefined (false, as default), true. The `withCredentials` property of the request. Whether to send user credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is accepted as well. |
+| `agent` | `{Undefined\|Boolean}` | undefined (false, as default), true. Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
 | `responseType` (or `dataType`) | `{Undefined\|String}` | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. See below for more. |
 | `headers` | `{Undefined\|Object}` | The request headers object. Usually used to define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
 | `contentType` | `{Undefined\|String}` | The same as `headers['Content-Type']`. |
-| `jsonp` | `{Undefined\|Boolean}` | undefined (default), true. The same as setting `responseType` (or `dataType`) `jsonp`. |
-| `promise` | `{Undefined\|Boolean\|Function}` | undefined (default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
+| `jsonp` | `{Undefined\|Boolean}` | undefined (false, as default), true. The same as setting `responseType` (or `dataType`) `jsonp`. |
+| `promise` | `{Undefined\|Boolean\|Function}` | undefined (false, as default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
 
 ## Case Matrix
 
