@@ -15,6 +15,7 @@
         <script src="rext.min.js" charset="utf-8"></script>
         <script type="text/javascript">
         window.onload = function () {
+            var localhost = window.location.host;
             function output(data, req) {
                 console.log('data', data);
                 console.log('req', req);
@@ -28,7 +29,7 @@
             })();
             (function get2() {
                 rext({
-                    url: 'http://localhost:4011/get2',
+                    url: `http://${localhost}:4011/get2`,
                     data: {
                         city: 'bj'
                     }
@@ -36,7 +37,7 @@
             })();
             (function get3() {
                 rext({
-                    url: 'http://localhost:4011/get3',
+                    url: `http://${localhost}:4011/get3`,
                     withCredentials: true
                 }).success(output).error(output);
             })();
@@ -75,7 +76,7 @@
                     data: {
                         city: 'c2'
                     },
-                    url: 'http://localhost:4011/post2'
+                    url: `http://${localhost}:4011/post2`
                 }).success(output).error(output);
             })();
             (function post3() {
@@ -84,7 +85,7 @@
                     data: {
                         city: 'c3'
                     },
-                    url: 'http://localhost:4011/post3',
+                    url: `http://${localhost}:4011/post3`,
                     withCredentials: true
                 }).success(output).error(output);
             })();
@@ -95,7 +96,7 @@
                         city: 'c4'
                     },
                     contentType: 'application/json',
-                    url: 'http://localhost:4011/post3',
+                    url: `http://${localhost}:4011/post3`,
                     withCredentials: true
                 }).success(output).error(output);
             })();

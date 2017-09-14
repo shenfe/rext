@@ -1,3 +1,8 @@
+const args = process.argv.slice(2);
+args.forEach(function (val, index, array) {
+    console.log(`${index}: ${val}`);
+});
+
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
@@ -186,4 +191,6 @@ const bodyParser = require('body-parser');
 })();
 
 console.log(`ip: ${ipAddr}`);
-open(`http://${ipAddr}:4010/test1.html`);
+
+if (args.indexOf('quiet') < 0)
+    open(`http://${ipAddr}:4010/test-localhost.html`);
