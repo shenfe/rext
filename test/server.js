@@ -89,7 +89,7 @@ const bodyParser = require('body-parser');
     });
 
     app.post('/post2', function (req, res) {
-        console.log(req);
+        console.log(req.body);
         res.json({
             code: 200,
             msg: 'ok',
