@@ -15,7 +15,7 @@
 
 ![gzip size](http://img.badgesize.io/https://raw.githubusercontent.com/shenfe/rext/master/dist/rext.min.js?compression=gzip)
 
-A light-weight (< 10kb minified) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
+A light-weight (< 10kb minified, < 5kb gzipped) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
 | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png" alt="IE / Edge" width="16px" height="16px" /> IE / Edge | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" /> Firefox | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" /> Safari |
 | :---: | :---: | :---: | :---: |
@@ -41,6 +41,8 @@ Define the invoker-hostname whitelist in `iframe-agent.html`:
 > ```js
 > ['.my-domain.com', '.my-domain1.com']
 > ```
+
+Additianally, before `rext.js` is imported, the JSON polyfill (e.g. [JSON-js](https://github.com/douglascrockford/JSON-js)) shall be executed.
 
 ## API
 
