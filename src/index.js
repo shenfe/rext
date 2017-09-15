@@ -3,7 +3,7 @@ import * as Util from './util.js'
 import * as XHR from './xhr.js'
 import * as XDR from './xdr.js'
 import jsonp from './jsonp.js'
-import * as IframeAgent from './iframe.js'
+import iframeAgent from './iframe.js'
 
 function rext(options) {
     var args = [].slice.call(arguments);
@@ -60,7 +60,7 @@ function rext(options) {
     /* If you want to disable XDomainRequest, comment the two lines above and build your version. */
 
     } else {
-        return IframeAgent.promiseSend.apply(null, args);
+        return iframeAgent.apply(null, args);
     }
 }
 
