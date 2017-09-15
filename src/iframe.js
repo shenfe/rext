@@ -211,6 +211,4 @@ function send(options) {
 
 var promiseSend = Helper.promiseWrap(send);
 
-export {
-    promiseSend
-}
+export default promiseSend
