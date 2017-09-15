@@ -128,7 +128,7 @@ Instructions of the option object:
 | `data` | `{Undefined\|Object}` | The data to send. Object recommended. |
 | `withCredentials` | `{Undefined\|Boolean}` | undefined (false, as default), true. The `withCredentials` property of the request. Whether to send user credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is accepted as well. |
 | `agent` | `{Undefined\|Boolean}` | undefined (false, as default), true. Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
-| `agentPageUrl` | `{Undefined\|String}` | undefined (false, as default), a url string. Specify the url of the iframe agent page if it's not in the root path of the target origin. |
+| `agentPageUrl` | `{Undefined\|String}` | undefined (`${targetOrigin}/iframe-agent.html`, as default), a url string. Specify the url of the iframe agent page if it's not in the root path of the target origin. |
 | `responseType` (or `dataType`) | `{Undefined\|String}` | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. See below for more. |
 | `headers` | `{Undefined\|Object}` | The request headers object. Usually used to define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
 | `contentType` | `{Undefined\|String}` | The same as `headers['Content-Type']`. |
