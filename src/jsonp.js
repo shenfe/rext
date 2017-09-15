@@ -8,7 +8,7 @@ import * as Helper from './helper.js'
  * @return {Undefined|Function}
  */
 function send(options, callback) {
-    var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
+    var callbackGlobalName = 'jsonp_' + Util.gid();
     window[callbackGlobalName] = callback || options.callback || options.complete;
 
     /* Create and insert */
