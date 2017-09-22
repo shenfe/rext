@@ -1,22 +1,48 @@
 {
-    "scripts": {
-        "build": "./node_modules/.bin/rollup -c ./build/rollup.config.js && ./node_modules/.bin/rollup -c ./build/rollup-min.config.js",
-        "build:xhr": "./node_modules/.bin/rollup -c ./build/rollup-xhr.config.js",
-        "build:xdr": "./node_modules/.bin/rollup -c ./build/rollup-xdr.config.js",
-        "build:jsonp": "./node_modules/.bin/rollup -c ./build/rollup-jsonp.config.js",
-        "build:iframe": "./node_modules/.bin/rollup -c ./build/rollup-iframe.config.js",
-        "build:iframe-agent": "node ./build/iframe-agent.build.js",
-        "test": "node ./test/server.js",
-        "test:quiet": "node ./test/server.js quiet"
-    },
-    "devDependencies": {
-        "body-parser": "^1.18.0",
-        "cookie-parser": "^1.4.3",
-        "express": "^4.15.4",
-        "ip": "^1.1.5",
-        "open": "0.0.5",
-        "rollup": "^0.49.2",
-        "rollup-plugin-uglify": "^2.0.1",
-        "uglify-js": "^3.0.28"
-    }
+  "scripts": {
+    "build": "rollup -c ./build/rollup.config.js && ./node_modules/.bin/rollup -c ./build/rollup-min.config.js",
+    "build:xhr": "rollup -c ./build/rollup-xhr.config.js",
+    "build:xdr": "rollup -c ./build/rollup-xdr.config.js",
+    "build:jsonp": "rollup -c ./build/rollup-jsonp.config.js",
+    "build:iframe": "rollup -c ./build/rollup-iframe.config.js",
+    "build:iframe-agent": "node ./build/iframe-agent.build.js",
+    "test": "node ./test/server.js",
+    "test:quiet": "node ./test/server.js quiet"
+  },
+  "devDependencies": {
+    "body-parser": "^1.18.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "ip": "^1.1.5",
+    "open": "0.0.5",
+    "rollup": "^0.49.2",
+    "rollup-plugin-uglify": "^2.0.1",
+    "uglify-js": "^3.0.28"
+  },
+  "name": "rexter",
+  "description": "A light-weight request library, for all browsers.",
+  "version": "0.1.0",
+  "main": "dist/rext.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shenfe/rext.git"
+  },
+  "keywords": [
+    "request",
+    "xmlhttprequest",
+    "jsonp",
+    "ajax",
+    "cross-domain",
+    "cross-browser"
+  ],
+  "author": "hengwu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shenfe/rext/issues"
+  },
+  "homepage": "https://github.com/shenfe/rext#readme"
 }
