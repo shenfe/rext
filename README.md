@@ -171,8 +171,8 @@ According to the [specification](https://xhr.spec.whatwg.org/#the-responsetype-a
 | :---: | :--- |
 | text | Default. |
 | json | - |
-| blob | Seldom. |
-| arraybuffer | Seldom. |
+| blob | If to receive files. |
+| arraybuffer | If to receive files. |
 | document | Seldom. |
 
 ## License
