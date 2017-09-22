@@ -12,23 +12,26 @@
 	- [License](#license)
 
 # rext
-A light-weight (< 10kb minified) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
-[![Sauce Test Status](https://saucelabs.com/buildstatus/hengwu)](https://saucelabs.com/u/hengwu)
+![gzip size](http://img.badgesize.io/https://raw.githubusercontent.com/shenfe/rext/master/dist/rext.min.js?compression=gzip)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/hengwu.svg)](https://saucelabs.com/u/hengwu)
+A light-weight (< 10kb minified, < 5kb gzipped) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
+
+| <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png" alt="IE / Edge" width="16px" height="16px" /> IE / Edge | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" /> Firefox | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" /> Safari |
+| :---: | :---: | :---: | :---: |
+| 6+ ✔ | All ✔ | All ✔ | All ✔ |
 
 ## Quick Import
 
-Use `rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
+Use `dist/rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
 
 ## IE 9- Support
 
-If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, define the invoker-hostname whitelist in `iframe-agent.html` and put it at the root path of the origin.
+If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, define the invoker-hostname whitelist in `dist/iframe-agent.html` and put it at the root path of the origin.
 
 For example:
 
-Define the invoker-hostname whitelist:
+Define the invoker-hostname whitelist in `iframe-agent.html`:
 
 > Replace
 > ```js
@@ -38,6 +41,8 @@ Define the invoker-hostname whitelist:
 > ```js
 > ['.my-domain.com', '.my-domain1.com']
 > ```
+
+Additianally, before `rext.js` is imported, the JSON polyfill (e.g. [JSON-js](https://github.com/douglascrockford/JSON-js)) shall be executed.
 
 ## API
 
@@ -116,20 +121,22 @@ Now each method (`then` or `success`, `catch` or `error`) will return an object 
 
 Instructions of the option object:
 
-| Property | Value |
-| :---: | :--- |
-| `type` | 'get' (default), 'post'. |
-| `url` | The resource url string. |
-| `data` | The data to send. Object recommended. |
-| `withCredentials` | false (default), true. The `withCredentials` property of the request. Whether to send use credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is OK as well. |
-| `agent` | Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
-| `responseType` (or `dataType`) | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. See below for more. |
-| `headers` | The request headers object. Usually define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
-| `contentType` | The same as `headers['Content-Type']`. |
-| `jsonp` | undefined (default), true. If `responseType` (or `dataType`) is set `jsonp`, this would be true as well. |
-| `promise` | undefined (default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
+| Property | Type | Value |
+| :---: | :---: | :--- |
+| `type` | `{Undefined\|String}` | 'get' (default), 'post'. |
+| `url` | `{String}` | The resource url string. |
+| `data` | `{Undefined\|Object}` | The data to send. Object recommended. |
+| `withCredentials` | `{Undefined\|Boolean}` | undefined (false, as default), true. The `withCredentials` property of the request. Whether to send user credentials with the request to another origin or not. An `xhrFields` object with `withCredentials` property of value `true` is accepted as well. |
+| `agent` | `{Undefined\|Boolean}` | undefined (false, as default), true. Whether to fall back to the iframe agent directly when the request is cross-domain and the browser is IE 9-. |
+| `agentPageUrl` | `{Undefined\|String}` | undefined (\`${targetOrigin}/iframe-agent.html\`, as default), a url string. Specify the url of the iframe agent page if it's not in the root path of the target origin. |
+| `responseType` (or `dataType`) | `{Undefined\|String}` | 'text' (default), 'json', .etc. Similar to the `dataType` option in jQuery ajax. A simple trial of JSON parsing would be conducted upon the response data besides the MIME type. See below for more. |
+| `headers` | `{Undefined\|Object}` | The request headers object. Usually used to define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
+| `contentType` | `{Undefined\|String}` | The same as `headers['Content-Type']`. |
+| `jsonp` | `{Undefined\|Boolean}` | undefined (false, as default), true. The same as setting `responseType` (or `dataType`) `jsonp`. |
+| `promise` | `{Undefined\|Boolean\|Function}` | undefined (false, as default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
 
 ## Case Matrix
+
 All the cases of browser requests.
 
 | Cross-Domain | With-Credentials | Web Browser | Approach | Restriction | Security |
@@ -170,4 +177,6 @@ According to the [specification](https://xhr.spec.whatwg.org/#the-responsetype-a
 
 ## License
 
-MIT
+[MIT](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2017-present, [shenfe](https://github.com/shenfe)

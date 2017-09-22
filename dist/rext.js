@@ -636,7 +636,7 @@ var supported$1 = !!window.XDomainRequest;
  * @return {Undefined|Function}
  */
 function send$2(options, callback) {
-    var callbackGlobalName = 'jsonp_' + String((new Date().getTime()) * 1000 + Math.round(Math.random() * 1000));
+    var callbackGlobalName = 'jsonp_' + gid();
     window[callbackGlobalName] = callback || options.callback || options.complete;
 
     /* Create and insert */
