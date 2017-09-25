@@ -2,7 +2,7 @@ const uglify = require('rollup-plugin-uglify');
 
 module.exports = {
     input: 'src/index.js',
-    name: 'rext',
+    name: 'rexter',
     output: {
         file: 'dist/rext.js',
         format: 'umd'

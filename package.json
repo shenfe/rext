@@ -1,10 +1,11 @@
 {
   "scripts": {
-    "build": "rollup -c ./build/rollup.config.js && ./node_modules/.bin/rollup -c ./build/rollup-min.config.js",
-    "build:xhr": "rollup -c ./build/rollup-xhr.config.js",
-    "build:xdr": "rollup -c ./build/rollup-xdr.config.js",
-    "build:jsonp": "rollup -c ./build/rollup-jsonp.config.js",
-    "build:iframe": "rollup -c ./build/rollup-iframe.config.js",
+    "build": "./node_modules/.bin/rollup -c ./build/rollup.config.js",
+    "build:min": "./node_modules/.bin/rollup -c ./build/rollup-min.config.js",
+    "build:xhr": "./node_modules/.bin/rollup -c ./build/rollup-xhr.config.js",
+    "build:xdr": "./node_modules/.bin/rollup -c ./build/rollup-xdr.config.js",
+    "build:jsonp": "./node_modules/.bin/rollup -c ./build/rollup-jsonp.config.js",
+    "build:iframe": "./node_modules/.bin/rollup -c ./build/rollup-iframe.config.js",
     "build:iframe-agent": "node ./build/iframe-agent.build.js",
     "test": "node ./test/server.js",
     "test:quiet": "node ./test/server.js quiet"
@@ -21,7 +22,7 @@
   },
   "name": "rexter",
   "description": "A light-weight request library, for all browsers.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "main": "dist/rext.js",
   "directories": {
     "test": "test"

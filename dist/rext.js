@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.rext = factory());
+	(global.rexter = factory());
 }(this, (function () { 'use strict';
 
 // Production steps of ECMA-262, Edition 5, 15.4.4.18
@@ -238,6 +238,7 @@ var type = function (v) {
 };
 
 var param = function (obj) {
+    // if (type(obj) === 'formdata') return obj;
     if (obj == null) return '';
     if (type(obj) === 'array') return JSON.stringify(obj);
     if (isBasic(obj)) return String(obj);
@@ -347,10 +348,14 @@ var defaults = {
 /**
  * Parse text response into JSON
  * @param  {String} req             The response
+ * @param  {String} typeRequired    The response type specified in the options
  * @return {String|JSON}            A JSON object or string
  */
-function parseResponse(req) {
+function parseResponse(req, typeRequired) {
     var result;
+    if (typeRequired === 'blob') {
+        return typeof Blob === 'function' ? req.response : req.responseText;
+    }
     if (req.responseType !== 'text' && req.responseType !== '') {
         return req.response;
     }
@@ -400,7 +405,7 @@ function send(options) {
         }
 
         /* Parse the response data */
-        var responseData = parseResponse(request);
+        var responseData = parseResponse(request, settings.responseType);
 
         /* Process the response */
         if (request.status >= 200 && request.status < 300) {
@@ -414,11 +419,25 @@ function send(options) {
 
     /* Setup the request */
     var isntGet = (typeof settings.type === 'string' && settings.type.toLowerCase() !== 'get');
-    var paramData = param(settings.data);
+    var paramData = (!isntGet && /multipart\/form-data/i.test(settings.headers['Content-Type'])) ? settings.data : param(settings.data);
     request.open(settings.type,
         (isntGet || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
         true);
     request.responseType = settings.responseType;
+    if (request.overrideMimeType) {
+        switch (settings.responseType) {
+        case 'document':
+        case 'xml':
+            request.overrideMimeType('text/xml; charset=utf-8');
+            break;
+        case 'text':
+            request.overrideMimeType('text/plain; charset=utf-8');
+            break;
+        case 'blob':
+            request.overrideMimeType('text/plain; charset=x-user-defined');
+            break;
+        }
+    }
 
     /* Set headers */
     for (var header in settings.headers) {
@@ -884,6 +903,19 @@ function rext(options) {
 
     if (options.promise && typeof options.promise !== 'function') {
         options.promise = rext.defaults.promise;
+    }
+    
+    if (typeof options.dataType === 'string') {
+        options.dataType = options.dataType.toLowerCase();
+    }
+    if (typeof options.responseType === 'string') {
+        options.responseType = options.responseType.toLowerCase();
+    }
+    if (typeof options.method === 'string') {
+        options.method = options.method.toLowerCase();
+    }
+    if (typeof options.type === 'string') {
+        options.type = options.type.toLowerCase();
     }
 
     var isJsonp = !!options.jsonp || options.dataType === 'jsonp' || options.responseType === 'jsonp';
