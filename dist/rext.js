@@ -251,7 +251,7 @@ var param = function (obj) {
     return encoded.join('&');
 };
 
-function isCrossDomain(url) {
+function completeUrl(url) {
     if (url.charAt(0) === '/') {
         if (url.charAt(1) === '/') {
             url = window.location.protocol + url;
@@ -259,6 +259,11 @@ function isCrossDomain(url) {
             url = window.location.protocol + '//' + window.location.host + url;
         }
     }
+    return url;
+}
+
+function isCrossDomain(url) {
+    url = completeUrl(url);
     var rurl = /^([\w.+-]+:)?(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/;
     var locParts = rurl.exec(window.location.href.toLowerCase()) || [];
     var curParts = rurl.exec(url.toLowerCase());
@@ -714,13 +719,6 @@ var promiseSend$2 = promiseWrap(send$2);
  * @return {String}     [description]
  */
 function parseOrigin(url) {
-    if (url.charAt(0) === '/') {
-        if (url.charAt(1) === '/') {
-            url = window.location.protocol + url;
-        } else {
-            url = window.location.protocol + '//' + window.location.host + url;
-        }
-    }
     var org = url.toString().replace(/^(.*\/\/[^\/?#]*).*$/, '$1');
     return org;
 }
@@ -898,8 +896,10 @@ function doOnReady(agentOrigin, iframe, requestId, requestOption) {
  * @return {[type]}         [description]
  */
 function send$3(options) {
+    options.url = completeUrl(options.url);
     var targetOrigin = parseOrigin(options.url);
     if (options.agentPageUrl) {
+        options.agentPageUrl = completeUrl(options.agentPageUrl);
         originAgentUrlTable[targetOrigin] = options.agentPageUrl;
     }
     var thenDo = {

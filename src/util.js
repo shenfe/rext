@@ -240,7 +240,7 @@ var param = function (obj) {
     return encoded.join('&');
 };
 
-function isCrossDomain(url) {
+function completeUrl(url) {
     if (url.charAt(0) === '/') {
         if (url.charAt(1) === '/') {
             url = window.location.protocol + url;
@@ -248,6 +248,11 @@ function isCrossDomain(url) {
             url = window.location.protocol + '//' + window.location.host + url;
         }
     }
+    return url;
+}
+
+function isCrossDomain(url) {
+    url = completeUrl(url);
     var rurl = /^([\w.+-]+:)?(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/;
     var locParts = rurl.exec(window.location.href.toLowerCase()) || [];
     var curParts = rurl.exec(url.toLowerCase());
@@ -304,6 +309,7 @@ export {
     extend,
     type,
     param,
+    completeUrl,
     isCrossDomain,
     funcontinue
 }

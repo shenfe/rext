@@ -7,13 +7,6 @@ import * as Helper from './helper.js'
  * @return {String}     [description]
  */
 function parseOrigin(url) {
-    if (url.charAt(0) === '/') {
-        if (url.charAt(1) === '/') {
-            url = window.location.protocol + url;
-        } else {
-            url = window.location.protocol + '//' + window.location.host + url;
-        }
-    }
     var org = url.toString().replace(/^(.*\/\/[^\/?#]*).*$/, '$1');
     return org;
 }
@@ -191,8 +184,10 @@ function doOnReady(agentOrigin, iframe, requestId, requestOption) {
  * @return {[type]}         [description]
  */
 function send(options) {
+    options.url = Util.completeUrl(options.url);
     var targetOrigin = parseOrigin(options.url);
     if (options.agentPageUrl) {
+        options.agentPageUrl = Util.completeUrl(options.agentPageUrl);
         originAgentUrlTable[targetOrigin] = options.agentPageUrl;
     }
     var thenDo = {
