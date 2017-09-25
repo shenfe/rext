@@ -241,6 +241,13 @@ var param = function (obj) {
 };
 
 function isCrossDomain(url) {
+    if (url[0] === '/') {
+        if (url[1] === '/') {
+            url = window.location.protocol + url;
+        } else {
+            url = window.location.protocol + '//' + window.location.host + url;
+        }
+    }
     var rurl = /^([\w.+-]+:)?(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/;
     var locParts = rurl.exec(window.location.href.toLowerCase()) || [];
     var curParts = rurl.exec(url.toLowerCase());

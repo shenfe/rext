@@ -14,6 +14,7 @@
     <body>
         <script src="rext.min.js" charset="utf-8"></script>
         <script type="text/javascript">
+        if (typeof rexter !== 'undefined') var rext = rexter;
         window.onload = function () {
             var localhost = window.location.hostname;
             function output(data, req) {

@@ -104,6 +104,7 @@
         <div><pre id="output"></pre></div>
         <script src="http://localhost:4011/rext.js" charset="utf-8"></script>
         <script type="text/javascript">
+            if (typeof rexter !== 'undefined') var rext = rexter;
             function output(data, req) {
                 console.log('data', data);
                 console.log('req', req);
