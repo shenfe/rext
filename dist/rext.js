@@ -359,7 +359,7 @@ function parseResponse(req, typeRequired) {
     if (typeRequired === 'blob') {
         return typeof Blob === 'function' ? req.response : req.responseText;
     }
-    if (req.responseType !== 'text' && req.responseType !== '') {
+    if (('responseType' in req) && req.responseType !== 'text' && req.responseType !== '') {
         return req.response;
     }
     try {
@@ -411,13 +411,19 @@ function send(options) {
         var responseData = parseResponse(request, settings.responseType);
 
         /* Process the response */
+        var req = {
+            status: request.status,
+            statusText: request.statusText,
+            responseText: request.responseText,
+            readyState: request.readyState
+        };
         if (request.status >= 200 && request.status < 300) {
-            thenDo.success.call(thenDo, responseData, request);
+            thenDo.success.call(thenDo, responseData, req);
         } else {
-            thenDo.error.call(thenDo, responseData, request);
+            thenDo.error.call(thenDo, responseData, req);
         }
 
-        thenDo.always.call(thenDo, responseData, request);
+        thenDo.always.call(thenDo, responseData, req);
     };
 
     /* Setup the request */
