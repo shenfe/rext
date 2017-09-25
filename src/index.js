@@ -11,6 +11,19 @@ function rext(options) {
     if (options.promise && typeof options.promise !== 'function') {
         options.promise = rext.defaults.promise;
     }
+    
+    if (typeof options.dataType === 'string') {
+        options.dataType = options.dataType.toLowerCase();
+    }
+    if (typeof options.responseType === 'string') {
+        options.responseType = options.responseType.toLowerCase();
+    }
+    if (typeof options.method === 'string') {
+        options.method = options.method.toLowerCase();
+    }
+    if (typeof options.type === 'string') {
+        options.type = options.type.toLowerCase();
+    }
 
     var isJsonp = !!options.jsonp || options.dataType === 'jsonp' || options.responseType === 'jsonp';
     if (isJsonp) {
