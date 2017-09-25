@@ -28,7 +28,10 @@ function send(options, callback) {
                 script.parentNode.removeChild(script);
             }
             script = null;
-            delete window[callbackGlobalName];
+            window[callbackGlobalName] = undefined;
+            try {
+                delete window[callbackGlobalName];
+            } catch (e) {}
         }
     };
 
