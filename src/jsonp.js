@@ -28,6 +28,7 @@ function send(options, callback) {
                 script.parentNode.removeChild(script);
             }
             script = null;
+            delete window[callbackGlobalName];
         }
     };
 
