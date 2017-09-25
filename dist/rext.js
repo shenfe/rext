@@ -701,9 +701,15 @@ var promiseSend$2 = promiseWrap(send$2);
  * @return {String}     [description]
  */
 function parseOrigin(url) {
-    var atag = window.document.createElement('a');
-    atag.href = url;
-    return atag.protocol + '//' + atag.host;
+    if (url[0] === '/') {
+        if (url[1] === '/') {
+            url = window.location.protocol + url;
+        } else {
+            url = window.location.protocol + '//' + window.location.host + url;
+        }
+    }
+    var org = url.toString().replace(/^(.*\/\/[^\/?#]*).*$/, '$1');
+    return org;
 }
 
 /**
