@@ -23,7 +23,13 @@ A light-weight (< 10kb minified, < 5kb gzipped) request library, for all browser
 
 ## Quick Import
 
-Use `dist/rext.js` as a universal module ([umd](https://github.com/umdjs/umd)).
+```sh
+npm install --save rexter
+```
+
+```js
+var rext = require('rexter');
+```
 
 ## IE 9- Support
 
