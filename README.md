@@ -163,7 +163,7 @@ The MIME type of data to **send**, like the `contentType` in jQuery ajax.
 
 ## Take a Look at `responseType`
 
-The alias of the expected MIME type of data to **receive**, similar to the `dataType` in jQuery ajax. This option affects the request header `Accept`, relating the response header `Content-Type`. However, **a simple trial of JSON parsing** would be conducted then regardless of the type of response data.
+The alias of the expected MIME type of data to **receive**, similar to the `dataType` in jQuery ajax. This option should affect the request header `Accept` and how to treat the response data, relating the response header `Content-Type`. However, **a simple trial of JSON parsing** would be conducted then regardless of the type of response data.
 
 According to the [specification](https://xhr.spec.whatwg.org/#the-responsetype-attribute) of `responseType`, the value can be:
 

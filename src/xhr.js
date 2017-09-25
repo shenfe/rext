@@ -112,7 +112,7 @@ function send(options) {
     request.open(settings.type,
         (isntGet || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
         true);
-    request.responseType = settings.responseType;
+    // request.responseType = settings.responseType;
     if (request.overrideMimeType) {
         switch (settings.responseType) {
         case 'document':
