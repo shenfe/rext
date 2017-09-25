@@ -252,8 +252,8 @@ var param = function (obj) {
 };
 
 function isCrossDomain(url) {
-    if (url[0] === '/') {
-        if (url[1] === '/') {
+    if (url.charAt(0) === '/') {
+        if (url.charAt(1) === '/') {
             url = window.location.protocol + url;
         } else {
             url = window.location.protocol + '//' + window.location.host + url;
@@ -714,8 +714,8 @@ var promiseSend$2 = promiseWrap(send$2);
  * @return {String}     [description]
  */
 function parseOrigin(url) {
-    if (url[0] === '/') {
-        if (url[1] === '/') {
+    if (url.charAt(0) === '/') {
+        if (url.charAt(1) === '/') {
             url = window.location.protocol + url;
         } else {
             url = window.location.protocol + '//' + window.location.host + url;
