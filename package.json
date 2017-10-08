@@ -23,7 +23,7 @@
   },
   "name": "rexter",
   "description": "A light-weight request library, for all browsers.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "dist/rext.js",
   "directories": {
     "test": "test"

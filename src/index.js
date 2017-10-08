@@ -39,6 +39,11 @@ function rext(options) {
     if (typeof options.type !== 'string') options.type = 'get';
     options.type = options.type.toLowerCase();
     var isntGet = options.type !== 'get';
+    
+    if (options.cache !== false) options.cache = true;
+    if (!options.cache && !isntGet && Util.isObject(options.data)) {
+        options.data._ = Util.gid();
+    }
 
     if (!options.headers) options.headers = {};
     if (options.contentType) {
