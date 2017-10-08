@@ -11,7 +11,7 @@
 	- [Take a Look at responseType](#take-a-look-at-responsetype)
 	- [License](#license)
 
-# rext
+<h1 align="center">rext</h1>
 
 ![gzip size](http://img.badgesize.io/https://raw.githubusercontent.com/shenfe/rext/master/dist/rext.min.js?compression=gzip)
 <a href="https://www.npmjs.com/package/rexter"><img src="https://img.shields.io/npm/v/rexter.svg"></a>
