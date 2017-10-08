@@ -14,6 +14,8 @@
 # rext
 
 ![gzip size](http://img.badgesize.io/https://raw.githubusercontent.com/shenfe/rext/master/dist/rext.min.js?compression=gzip)
+<a href="https://www.npmjs.com/package/rexter"><img src="https://img.shields.io/npm/v/rexter.svg"></a>
+![license](https://img.shields.io/npm/l/rexter.svg)
 
 A light-weight (< 10kb minified, < 5kb gzipped) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
