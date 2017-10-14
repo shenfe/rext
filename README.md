@@ -36,7 +36,7 @@ var rext = require('rexter');
 
 ## IE 9- Support
 
-If IE9- browsers are required to send cross-domain requests with user credentials to some target origin, define the invoker-hostname whitelist in `dist/iframe-agent.html` and put it at the root path of the origin.
+If IE9- browsers are required to **send cross-domain requests with user credentials**, define the invoker-hostname whitelist in `dist/iframe-agent.html` and put it at the root path of the target origin.
 
 For example:
 
@@ -51,7 +51,9 @@ Define the invoker-hostname whitelist in `iframe-agent.html`:
 > ['.my-domain.com', '.my-domain1.com']
 > ```
 
-Additianally, before `rext.js` is imported, the JSON polyfill (e.g. [JSON-js](https://github.com/douglascrockford/JSON-js)) shall be executed.
+Additianally, before `rext` is imported, the JSON polyfill (e.g. [JSON-js](https://github.com/douglascrockford/JSON-js)) shall be executed.
+
+**Notice** that `rext` does not include full polyfills in itself.
 
 ## API
 
