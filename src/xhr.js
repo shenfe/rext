@@ -140,6 +140,12 @@ function send(options) {
             request.setRequestHeader(header, settings.headers[header]);
         }
     }
+    
+    /* Set timeout */
+    if (/^\d+$/.test(options.timeout)) {
+        request.timeout = options.timeout;
+        request.ontimeout = xhrCallback;
+    }
 
     /* Set `withCredentials` */
     if (settings.withCredentials) {
