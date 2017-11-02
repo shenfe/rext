@@ -63,6 +63,10 @@ function parseResponse(req, typeRequired) {
  */
 function send(options) {
     var settings = Util.extend({}, defaults, options || {});
+    if (options.simple) {
+        if (!('X-Requested-With' in options.headers))
+            delete settings.headers['X-Requested-With'];
+    }
     var id = Util.uid();
 
     /* Then-do methods */

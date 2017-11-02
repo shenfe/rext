@@ -389,6 +389,10 @@ function parseResponse(req, typeRequired) {
  */
 function send(options) {
     var settings = extend({}, defaults, options || {});
+    if (options.simple) {
+        if (!('X-Requested-With' in options.headers))
+            delete settings.headers['X-Requested-With'];
+    }
     var id = uid();
 
     /* Then-do methods */
@@ -465,6 +469,12 @@ function send(options) {
         if (settings.headers.hasOwnProperty(header)) {
             request.setRequestHeader(header, settings.headers[header]);
         }
+    }
+    
+    /* Set timeout */
+    if (/^\d+$/.test(options.timeout)) {
+        request.timeout = options.timeout;
+        request.ontimeout = xhrCallback;
     }
 
     /* Set `withCredentials` */
