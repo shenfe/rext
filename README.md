@@ -144,6 +144,7 @@ Instructions of the option object:
 | `contentType` | `{Undefined\|String}` | The same as `headers['Content-Type']`. |
 | `jsonp` | `{Undefined\|Boolean}` | undefined (false, as default), true. The same as setting `responseType` (or `dataType`) `jsonp`. |
 | `promise` | `{Undefined\|Boolean\|Function}` | undefined (false, as default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
+| `simple` | `{Undefined\|Boolean}` | undefined (false, as default), true. Whether not to force a CORS XHR to be a non-simple request. |
 
 ## Case Matrix
 
