@@ -998,7 +998,7 @@ function rext(options) {
 
     var forceIframe = !!options.agent;
 
-    if (!isCrossDomain$$1 || corsSupported) {
+    if (!isCrossDomain$$1 || (corsSupported && !forceIframe)) {
         return promiseSend.apply(null, args);
 
     /* If you want to disable XDomainRequest, comment the two lines below and build your version. */
