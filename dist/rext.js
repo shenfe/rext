@@ -292,31 +292,13 @@ function funcontinue(target, prop) {
     };
 }
 
-function PromiseDecor(Prom, executor) {
-    this.promise = new Prom(executor);
-}
-PromiseDecor.prototype.success =
-    PromiseDecor.prototype.always =
-    PromiseDecor.prototype.complete =
-    PromiseDecor.prototype.then = function () {
-        var args = [].slice.call(arguments);
-        this.promise = this.promise.then.apply(this.promise, args);
-        return this;
-    };
-PromiseDecor.prototype.error =
-    PromiseDecor.prototype['catch'] = function () {
-        var args = [].slice.call(arguments);
-        this.promise = this.promise['catch'].apply(this.promise, args);
-        return this;
-    };
-
 function promiseWrap(send) {
-    return function promiseWrap(options) {
-        var args = [].slice.call(arguments);
-        var ret = send.apply(null, args);
+    return function (options) {
+        var ret = send.apply(null, arguments);
         if (!options.promise) return ret;
 
-        return new PromiseDecor(options.promise, function (resolve, reject) {
+        var Prom = options.promise;
+        return new Prom(function (resolve, reject) {
             ret.success(function (data) {
                 resolve(data);
             });
@@ -934,10 +916,195 @@ function send$3(options) {
 
 var promiseSend$3 = promiseWrap(send$3);
 
+var util = {
+    doAsync: function (fn, arg, target) {
+        (typeof process === 'undefined' ? setTimeout : process.nextTick)(
+            (arguments.length === 1) ? fn : function () {
+                fn.apply(target, (arg instanceof Array) ? arg : [arg]);
+            }
+        );
+    },
+    isFunction: function (v) { return typeof v === 'function' },
+    isObject: function (v) { return typeof v === 'object' && v !== null }
+};
+
+var extension = function (Prom) {
+    /* Prototype methods */
+
+    Prom.prototype['catch'] = function (onRejected) {
+        return this.then(undefined, onRejected);
+    };
+
+    // https://www.promisejs.org/api/
+    Prom.prototype.done = function (onFulfilled, onRejected) {
+        var _this = arguments.length ? this.then.apply(this, arguments) : this;
+        _this.then(undefined, function (err) {
+            util.doAsync(function () { throw err });
+        });
+    };
+
+    Prom.prototype['finally'] = function (fn) {
+        if (!util.isFunction(fn)) return this;
+        fn = function (value) {
+            return Prom.resolve(fn()).then(function () {
+                return value;
+            });
+        };
+        return this.then(fn, fn);
+    };
+
+    /* Static methods */
+
+    Prom.resolved = Prom.resolve = function (value) {
+        return new Prom(function (resolve) {
+            resolve(value);
+        });
+    };
+
+    Prom.rejected = Prom.reject = function (reason) {
+        return new Prom(function (_, reject) {
+            reject(reason);
+        });
+    };
+
+    Prom.deferred = function () {
+        var _resolve, _reject;
+        return {
+            promise: new Prom(function (resolve, reject) {
+                _resolve = resolve;
+                _reject = reject;
+            }),
+            resolve: _resolve,
+            reject: _reject
+        };
+    };
+
+    Prom.all = function (arr) {
+        var ps = Array.prototype.slice.call(arr);
+        return new Prom(function (resolve, reject) {
+            if (ps.length === 0) return resolve([]);
+            var total = ps.length, remain = ps.length;
+            for (var i = 0; i < total; i++) {
+                Prom.resolved(ps[i]).then(function (value) {
+                    ps[i] = value;
+                    remain--;
+                    if (remain === 0) resolve(ps);
+                }, reject);
+            }
+        });
+    };
+
+    Prom.race = function (arr) {
+        var ps = Array.prototype.slice.call(arr);
+        return new Prom(function (resolve, reject) {
+            if (ps.length === 0) return resolve(null);
+            for (var i = 0, total = ps.length; i < total; i++)
+                Prom.resolve(ps[i]).then(resolve, reject);
+        });
+    };
+};
+
+var Resolve = function (promise, x) {
+    if (promise === x) { // 2.3.1
+        TransitionPromise(promise, 2, new TypeError('The promise and its value refer to the same object.'));
+    } else if (x && x.constructor === Prom) { // 2.3.2
+        if (x.state === 0) { // 2.3.2.1
+            x.then(function (value) { Resolve(promise, value); },
+                function (reason) { TransitionPromise(promise, 2, reason); });
+        } else
+            TransitionPromise(promise, x.state, x.value); // 2.3.2.2, 2.3.2.3
+    } else if (util.isObject(x) || util.isFunction(x)) { // 2.3.3
+        var called = false;
+        try {
+            var xthen = x.then; // 2.3.3.1
+            if (util.isFunction(xthen)) { // 2.3.3.3
+                xthen.call(x, function (y) { // 2.3.3.3.1
+                        if (called) return; // 2.3.3.3.3
+                        Resolve(promise, y);
+                        called = true;
+                    }, function (r) { // 2.3.3.3.2
+                        if (called) return; // 2.3.3.3.3
+                        TransitionPromise(promise, 2, r);
+                        called = true;
+                    });
+            } else { // 2.3.3.4
+                TransitionPromise(promise, 1, x);
+                called = true;
+            }
+        } catch (e) { // 2.3.3.2, 2.3.3.3.4
+            if (!called) {
+                TransitionPromise(promise, 2, e);
+                called = true;
+            }
+        }
+    } else
+        TransitionPromise(promise, 1, x); // 2.3.4
+};
+
+var ThenPromise = function (promise2, promise1state, promise1value) {
+    if (promise1state !== 0 && promise2.callbacks[promise1state]) { // 2.2.2, 2.2.3
+        var value;
+        try {
+            value = promise2.callbacks[promise1state].call(undefined, promise1value); // 2.2.5
+        } catch (e) {
+            TransitionPromise(promise2, 2, e); // 2.2.7.2
+            return;
+        }
+        Resolve(promise2, value); // 2.2.7.1
+    } else if (promise1state === 1 && !promise2.callbacks[1]) // 2.2.1.1
+        Resolve(promise2, promise1value); // 2.2.7.3
+    else if (promise1state === 2 && !promise2.callbacks[2]) // 2.2.1.2
+        TransitionPromise(promise2, 2, promise1value); // 2.2.7.4
+};
+
+var TransitionPromise = function (promise, state, value) {
+    if (promise.state !== 0 || state === 0) return; // 2.1.1.1, 2.1.2.1, 2.1.3.1
+    promise.state = state;
+    promise.value = value; // 2.1.2.2, 2.1.3.2
+    util.doAsync(function () { // 2.2.6
+        while (promise.queue.length) ThenPromise(promise.queue.shift(), promise.state, promise.value);
+    });
+};
+
+var Prom = function (executor) {
+    this.state = 0; // 0: pending, 1: fulfilled (resolved), 2: rejected
+    this.value = null;
+    this.queue = [];
+    this.callbacks = {};
+
+    if (util.isFunction(executor)) {
+        var _this = this;
+        executor(function (value) { Resolve(_this, value); },
+            function (reason) { TransitionPromise(_this, 2, reason); });
+    }
+};
+
+Prom.prototype.then = function (onFulfilled, onRejected) {
+    var p = new Prom();
+    p.callbacks[1] = util.isFunction(onFulfilled) && onFulfilled;
+    p.callbacks[2] = util.isFunction(onRejected) && onRejected;
+    (this.state === 0) ? this.queue.push(p) : util.doAsync(ThenPromise, [p, this.state, this.value]); // 2.2.4
+    return p;
+};
+
+Prom.prototype.resolve = function (value) {
+    Resolve(this, value);
+    return this;
+};
+
+Prom.prototype.reject = function (reason) {
+    TransitionPromise(this, 2, reason);
+    return this;
+};
+
+extension(Prom);
+
+var src = Prom;
+
 function rext(options) {
     var args = [].slice.call(arguments);
 
-    if (options.promise && typeof options.promise !== 'function') {
+    if (options.promise !== false) {
         options.promise = rext.defaults.promise;
     }
     
@@ -1013,7 +1180,10 @@ function rext(options) {
 
 rext.defaults = {};
 
-if (typeof Promise === 'function') {
+window.rext_promises_aplus = src;
+if (typeof Promise === 'undefined') {
+    rext.defaults.promise = src;
+} else {
     rext.defaults.promise = Promise;
 }
 

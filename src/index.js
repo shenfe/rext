@@ -84,8 +84,11 @@ function rext(options) {
 
 rext.defaults = {};
 
+import Prom from '@hengwu/promises-aplus'
+
+window.rext_promises_aplus = Prom;
 if (typeof Promise === 'undefined') {
-    rext.defaults.promise = Promise;
+    rext.defaults.promise = Prom;
 } else {
     rext.defaults.promise = Promise;
 }

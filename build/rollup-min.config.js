@@ -1,4 +1,6 @@
 const uglify = require('rollup-plugin-uglify');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
 module.exports = {
     input: 'src/index.js',
@@ -8,6 +10,8 @@ module.exports = {
         format: 'umd'
     },
     plugins: [
+        nodeResolve(),
+        commonjs(),
         uglify({
             // mangle: false,
             ie8: true
