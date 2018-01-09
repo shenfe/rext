@@ -4,7 +4,7 @@
 	- [API](#api)
 		- [XMLHttpRequest](#xmlhttprequest)
 		- [JSONP](#jsonp)
-		- [a Wrapped Promise Object](#a-wrapped-promise-object)
+		- [Promise Object Returned](#promise-object-returned)
 	- [Options](#options)
 	- [Case Matrix](#case-matrix)
 	- [Take a Look at headers['Content-Type']](#take-a-look-at-headerscontent-type)
@@ -17,7 +17,7 @@
 <a href="https://www.npmjs.com/package/rexter"><img src="https://img.shields.io/npm/v/rexter.svg"></a>
 ![license](https://img.shields.io/npm/l/rexter.svg)
 
-A light-weight (< 5kb gzipped) request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
+A light-weight (< 5kb gzipped) and Promise-supported request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
 | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png" alt="IE / Edge" width="16px" height="16px" /> IE / Edge | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" /> Firefox | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" /> Safari |
 | :---: | :---: | :---: | :---: |
@@ -56,7 +56,7 @@ Additianally, before `rext` is imported, the JSON polyfill (e.g. [JSON-js](https
 
 ## API
 
-As simple as `rext(options).success(onSuccess).error(onError)`.
+As simple as `rext(options)`.
 
 Besides, the format of jQuery ajax's option object is also allowed:
 
@@ -83,7 +83,8 @@ The `success`, `error`, `always` callbacks are allowed both a chain call and def
 ```js
 rext({
     url: '/path/to/resource',
-    data: { /**/ }
+    data: { /**/ },
+    promise: false
 }).success((data, response) => {
     /**/
 }).error((data, response) => {
@@ -107,25 +108,22 @@ rext({
 });
 ```
 
-### a Wrapped Promise Object
+### Promise Object Returned
 
-The Promise object is fine. It is wrapped in an object which has a `promise` property.
-
-To enable the Promise object, just include a `promise` property with value `true` in the option object. 
+A Promise object is returned by default. Set property `promise` value `false` if you do not want to get a Promise object or you prefer to use `success` and `error` methods actually.
 
 ```js
-var promise = rext({
-    promise: true,
+rext({
     url: '/path/to/resource',
     data: { /**/ }
 }).then(data => {
     /**/
-}).catch(data => {
+}).catch(err => {
     /**/
-}).promise;
+});
 ```
 
-Now each method (`then` or `success`, `catch` or `error`) will return an object with a property `promise` whose value is the actual Promise object.
+[shenfe/promises-aplus](https://github.com/shenfe/promises-aplus) is used as a polyfill when the browser does not support Promise.
 
 ## Options
 
@@ -143,7 +141,7 @@ Instructions of the option object:
 | `headers` | `{Undefined\|Object}` | The request headers object. Usually used to define the `Content-Type` property (similar to the `contentType` option in jQuery ajax), of which 'application/x-www-form-urlencoded' is the default value. See below for more. |
 | `contentType` | `{Undefined\|String}` | The same as `headers['Content-Type']`. |
 | `jsonp` | `{Undefined\|Boolean}` | undefined (false, as default), true. The same as setting `responseType` (or `dataType`) `jsonp`. |
-| `promise` | `{Undefined\|Boolean\|Function}` | undefined (false, as default), true, or a Promise object constructor. Whether to use Promise object inside the returned value. |
+| `promise` | `{Undefined\|Boolean\|Function}` | undefined, false, true, or a Promise object constructor. Whether to return a Promise object. Set it `false` if not for a Promise object. |
 | `simple` | `{Undefined\|Boolean}` | undefined (false, as default), true. Whether not to force an X-Requested-With header in an XHR. |
 
 ## Case Matrix

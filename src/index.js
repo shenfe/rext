@@ -8,7 +8,7 @@ import iframeAgent from './iframe.js'
 function rext(options) {
     var args = [].slice.call(arguments);
 
-    if (options.promise && typeof options.promise !== 'function') {
+    if (options.promise !== false) {
         options.promise = rext.defaults.promise;
     }
     
@@ -84,7 +84,9 @@ function rext(options) {
 
 rext.defaults = {};
 
-if (typeof Promise === 'function') {
+if (typeof Promise === 'undefined') {
+    rext.defaults.promise = Promise;
+} else {
     rext.defaults.promise = Promise;
 }
 
