@@ -17,7 +17,7 @@
 <a href="https://www.npmjs.com/package/rexter"><img src="https://img.shields.io/npm/v/rexter.svg"></a>
 ![license](https://img.shields.io/npm/l/rexter.svg)
 
-A light-weight (< 5kb gzipped) and Promise-supported request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
+A light-weight (< 5kb gzipped) and Promise-supported HTTP request library, for all browsers (i.e. even cross-domain requests in IE 6 are possible).
 
 | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png" alt="IE / Edge" width="16px" height="16px" /> IE / Edge | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" /> Firefox | <img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" /> Safari |
 | :---: | :---: | :---: | :---: |
