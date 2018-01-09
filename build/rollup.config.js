@@ -12,9 +12,5 @@ module.exports = {
     plugins: [
         nodeResolve(),
         commonjs()
-        // , uglify({
-        //     // mangle: false,
-        //     ie8: true
-        // })
     ]
 };
