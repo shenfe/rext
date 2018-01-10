@@ -52,7 +52,7 @@ Define the invoker-hostname whitelist in `iframe-agent.html`:
 
 Additianally, before `rext` is imported, the JSON polyfill (e.g. [JSON-js](https://github.com/douglascrockford/JSON-js)) shall be executed.
 
-**Notice** that `rext` does not include full polyfills in itself.
+⚠️ `rext` does not include full polyfills in itself.
 
 ## API
 
@@ -123,7 +123,7 @@ rext({
 });
 ```
 
-[shenfe/promises-aplus](https://github.com/shenfe/promises-aplus) is used as a polyfill when the browser does not support Promise.
+⚠️ [shenfe/promises-aplus](https://github.com/shenfe/promises-aplus) is used as a polyfill when the browser does not support Promise.
 
 ## Options
 
