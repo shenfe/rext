@@ -123,7 +123,7 @@ rext({
 });
 ```
 
-⚠️ [shenfe/promises-aplus](https://github.com/shenfe/promises-aplus) is used as a polyfill when the browser does not support Promise.
+👏 [shenfe/promises-aplus](https://github.com/shenfe/promises-aplus) is used as a polyfill when the browser does not support Promise.
 
 ## Options
 
