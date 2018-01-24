@@ -118,7 +118,23 @@ function send(options) {
 
     /* Setup the request */
     var isntGet = (typeof settings.type === 'string' && settings.type.toLowerCase() !== 'get');
-    var paramData = (!isntGet && /multipart\/form-data/i.test(settings.headers['Content-Type'])) ? settings.data : Util.param(settings.data);
+    var paramData;
+    if (/multipart\/form-data/i.test(settings.headers['Content-Type'])) {
+        if (typeof FormData === 'function') {
+            if (options.data instanceof FormData)
+                paramData = options.data;
+            else {
+                paramData = new FormData();
+                Util.each(options.data, function (v, p) {
+                    paramData.append(p, v);
+                });
+            }
+        } else {
+            paramData = options.data;
+        }
+    } else {
+        paramData = Util.param(settings.data);
+    }
     request.open(settings.type,
         (isntGet || !paramData) ? settings.url : (settings.url + (settings.url.indexOf('?') > 0 ? '&' : '?') + paramData),
         true);
@@ -141,6 +157,7 @@ function send(options) {
     /* Set headers */
     for (var header in settings.headers) {
         if (settings.headers.hasOwnProperty(header)) {
+            if (header === 'Content-Type' && /multipart\/form-data/i.test(settings.headers[header])) continue;
             request.setRequestHeader(header, settings.headers[header]);
         }
     }
