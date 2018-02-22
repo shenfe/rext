@@ -25,8 +25,8 @@ A light-weight (< 5kb gzipped) and **Promise-supported** HTTP request library, f
 
 ## Quick Import
 
-```sh
-npm install --save rexter
+```bash
+$ npm install --save rexter
 ```
 
 ```js
