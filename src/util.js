@@ -273,7 +273,7 @@ function funcontinue(target, prop) {
     return function (fn) {
         var oldFn = target[prop];
         target[prop] = function () {
-            var args = [].slice.call(arguments);
+            var args = arguments;
             oldFn && oldFn.apply(this, args);
             fn && fn.apply(this, args);
         };
